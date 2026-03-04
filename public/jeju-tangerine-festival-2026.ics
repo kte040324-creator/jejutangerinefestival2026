@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//2026 Jeju Tangerine Festival//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:jeju-tangerine-festival-2026@jeju
+DTSTAMP:20260304T000000Z
+DTSTART;VALUE=DATE:20261101
+DTEND;VALUE=DATE:20261108
+SUMMARY:2026 Jeju Tangerine Festival
+LOCATION:Hyodon-dong\, Seogwipo\, Jeju\, South Korea
+DESCRIPTION:Dates: Nov 1–7\, 2026\\nLocation: Hyodon-dong\, Seogwipo\, Jeju\, South Korea\\nExperiences: Tangerine Picking Experience; Tangerine Jam & Juice Making; Fresh Local Farmers' Market; Live Local Music & Performances.
+END:VEVENT
+END:VCALENDAR
