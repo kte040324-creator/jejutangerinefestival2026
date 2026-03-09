@@ -9,15 +9,12 @@ type NamedEntity = {
 }
 
 import { useEffect, useRef, useState } from 'react'
+import ClickSpark from './components/ClickSpark'
 
 const figmaAssets = {
   heroTitleSvg: '/figma/hero-title.svg',
   headerMarkSvg: '/figma/header-mark.svg',
   glowEllipseSvg: '/figma/glow-ellipse.svg',
-  orangeLeftPng: '/figma/orange-left.png',
-  orangeRightPng: '/figma/orange-right.png',
-  slicePng: '/figma/slice.png',
-  shellPng: '/figma/shell.png',
 } as const
 
 const heroCanvas = {
@@ -28,7 +25,6 @@ const heroCanvas = {
 
 const heroScaleMultiplier = 0.8
 const heroButtonYOffset = 40
-const heroDecorationYOffset = 40
 
 const festival = {
   name: '2026 Jeju Tangerine Festival',
@@ -92,12 +88,16 @@ function App() {
 
   const pillRef = useRef<HTMLDivElement | null>(null)
   const logoFrameRef = useRef<HTMLDivElement | null>(null)
-  const shellRef = useRef<HTMLImageElement | null>(null)
-  const orangeLeftRef = useRef<HTMLImageElement | null>(null)
-  const sliceRef = useRef<HTMLImageElement | null>(null)
-  const orangeRightRef = useRef<HTMLImageElement | null>(null)
+  const shellRef = useRef<HTMLElement | null>(null)
+  const orangeLeftRef = useRef<HTMLElement | null>(null)
+  const sliceRef = useRef<HTMLElement | null>(null)
+  const orangeRightRef = useRef<HTMLElement | null>(null)
   const viewProgramRef = useRef<HTMLAnchorElement | null>(null)
   const getTicketsRef = useRef<HTMLAnchorElement | null>(null)
+
+  useEffect(() => {
+    void import('@google/model-viewer')
+  }, [])
 
   useEffect(() => {
     const update = () => {
@@ -119,9 +119,7 @@ function App() {
 
     if (prefersReducedMotion) return
 
-    // Only images should float; keep UI (pill/logo/buttons) locked in place.
     const layers = [
-      // As you scroll down, images drift outward (left/right) while floating.
       { ref: shellRef, rotateDeg: 2.83, ampX: 6, ampY: 10, scaleAmp: 0.015, parallaxX: 0, parallaxY: 26, outwardSign: 1, outwardMax: 120, phase: 2.2, freq: 0.8 },
       { ref: orangeLeftRef, rotateDeg: -35.88, ampX: 7, ampY: 12, scaleAmp: 0.018, parallaxX: 0, parallaxY: 28, outwardSign: -1, outwardMax: 140, phase: 3.4, freq: 0.85 },
       { ref: sliceRef, rotateDeg: 20.82, ampX: 6, ampY: 10, scaleAmp: 0.015, parallaxX: 0, parallaxY: 24, outwardSign: -1, outwardMax: 100, phase: 4.1, freq: 0.75 },
@@ -145,7 +143,7 @@ function App() {
     }
 
     let rafId = 0
-    let p = 0 // smoothed progress
+    let p = 0
 
     const clamp01 = (v: number) => Math.max(0, Math.min(1, v))
     const easeOutCubic = (v: number) => 1 - Math.pow(1 - clamp01(v), 3)
@@ -186,7 +184,6 @@ function App() {
     rafId = window.requestAnimationFrame(tick)
     return () => {
       window.cancelAnimationFrame(rafId)
-      // Reset any previously applied transforms (esp. during HMR).
       for (const el of allInteractiveEls) {
         el.style.transform = ''
         el.style.willChange = ''
@@ -238,171 +235,218 @@ function App() {
             height: Math.ceil(heroCanvas.height * heroScale),
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-[#ff4000] to-white" />
+          <ClickSpark sparkColor="rgba(255,255,255,0.9)" sparkSize={24} sparkRadius={36} sparkCount={10} duration={420}>
+            <div className="absolute inset-0 bg-gradient-to-b from-[#ff4000] to-white" />
 
-          <div
-            className="absolute left-1/2 top-0"
-            style={{
-              width: heroCanvas.width,
-              height: heroCanvas.height,
-              transform: `translateX(-50%) scale(${heroScale})`,
-              transformOrigin: 'top center',
-            }}
-          >
-            {/* Glass pill container (selected frame: 177:1853 / 660x104) */}
             <div
-              ref={pillRef}
-              className="absolute"
+              className="absolute left-1/2 top-0"
               style={{
-                left: 390,
-                top: 163 - heroCanvas.headerHeight,
-                width: 660,
-                height: 104,
+                width: heroCanvas.width,
+                height: heroCanvas.height,
+                transform: `translateX(-50%) scale(${heroScale})`,
+                transformOrigin: 'top center',
               }}
             >
+              {/* Glass pill container (selected frame: 177:1853 / 660x104) */}
               <div
-                className="absolute left-1/2 top-0 h-[104px] w-[530px] -translate-x-1/2 rounded-[72px] border border-solid border-white"
+                ref={pillRef}
+                className="absolute z-20"
                 style={{
-                  backgroundImage:
-                    'linear-gradient(100.751deg, rgba(255, 255, 255, 0.12) 0.52999%, rgba(63, 255, 245, 0.11) 51.312%, rgba(255, 255, 255, 0.114) 97.435%)',
-                }}
-              />
-              <p className="absolute m-0 left-1/2 top-[17px] h-[68px] w-[386px] -translate-x-1/2 text-center text-[30px] font-light leading-[1.053] tracking-[0.6px] text-white">
-                11.01.26 - 11.07.26
-              </p>
-              <p className="absolute m-0 left-[calc(50%+0.5px)] top-[57px] h-[47px] w-[575px] -translate-x-1/2 text-center text-[30px] font-light leading-[normal] text-white">
-                PEEL TANGERINES. FEEL JEJU.
-              </p>
-            </div>
-
-            {/* Main logo frame */}
-            <div
-              ref={logoFrameRef}
-              className="absolute"
-              style={{
-                left: 433,
-                top: 378 - heroCanvas.headerHeight,
-                width: 575,
-                height: 614,
-              }}
-            >
-              <img
-                alt=""
-                src={figmaAssets.glowEllipseSvg}
-                className="absolute left-1/2 top-[287.5px] h-[940.6px] w-[940.6px] -translate-x-1/2 -translate-y-1/2 object-contain"
-              />
-              <img
-                src={figmaAssets.heroTitleSvg}
-                alt="Jeju tangerine festival"
-                className="absolute left-[53px] top-[17px] h-[597px] w-[446px] object-contain"
-              />
-            </div>
-
-            {/* Decorations */}
-            <img
-              ref={shellRef}
-              alt=""
-              src={figmaAssets.shellPng}
-              className="pointer-events-none absolute object-contain"
-              style={{
-                left: 1017,
-                top: 258 - heroCanvas.headerHeight + heroDecorationYOffset,
-                width: 354.8065,
-                height: 280.1722,
-                transformOrigin: 'center',
-              }}
-            />
-            <img
-              ref={orangeLeftRef}
-              alt=""
-              src={figmaAssets.orangeLeftPng}
-              className="pointer-events-none absolute object-contain"
-              style={{
-                left: 33.2868,
-                top: 461.5528 - heroCanvas.headerHeight + heroDecorationYOffset,
-                width: 340.7182,
-                height: 327.9672,
-                transformOrigin: 'center',
-              }}
-            />
-            <img
-              ref={sliceRef}
-              alt=""
-              src={figmaAssets.slicePng}
-              className="pointer-events-none absolute object-contain"
-              style={{
-                left: 171.2913,
-                top: 850 - heroCanvas.headerHeight + heroDecorationYOffset,
-                width: 330.2893,
-                height: 256.7225,
-                transformOrigin: 'center',
-              }}
-            />
-            <img
-              ref={orangeRightRef}
-              alt=""
-              src={figmaAssets.orangeRightPng}
-              className="pointer-events-none absolute object-cover"
-              style={{
-                left: 1108,
-                top: 720 - heroCanvas.headerHeight + heroDecorationYOffset,
-                width: 403,
-                height: 395,
-              }}
-            />
-
-            {/* Buttons */}
-            <a
-              ref={viewProgramRef}
-              href="#program"
-              className="absolute h-[50px] w-[163px] rounded-[100px]"
-              style={{
-                left: 530,
-                top: 1031 - heroCanvas.headerHeight + heroButtonYOffset,
-              }}
-            >
-              <span className="absolute left-0 top-0 h-[50px] w-[163px] rounded-[100px] opacity-80">
-                <span className="absolute left-0 top-0 h-[50px] w-[163px] rounded-[100px] bg-[rgba(63,255,245,0.9)]" />
-              </span>
-              <span
-                className="absolute left-[82px] top-[14px] h-[29px] w-[130px] -translate-x-1/2 text-center text-black"
-                style={{
-                  fontFamily: '"Neue Haas Grotesk Display Pro","Helvetica Neue",Helvetica,Arial,sans-serif',
-                  fontWeight: 400, // 55 Roman
-                  fontSize: 18,
-                  lineHeight: 1.053,
-                  letterSpacing: '0.36px',
+                  left: 390,
+                  top: 163 - heroCanvas.headerHeight,
+                  width: 660,
+                  height: 104,
                 }}
               >
-                View Program
-              </span>
-            </a>
-            <a
-              ref={getTicketsRef}
-              href="#location"
-              className="absolute h-[50px] w-[163px] rounded-[100px]"
-              style={{
-                left: 747,
-                top: 1031 - heroCanvas.headerHeight + heroButtonYOffset,
-              }}
-            >
-              <span className="absolute left-0 top-0 h-[50px] w-[163px] rounded-[100px] opacity-80">
-                <span className="absolute left-0 top-0 h-[50px] w-[163px] rounded-[100px] bg-[rgba(255,255,255,0.9)]" />
-              </span>
-              <span
-                className="absolute left-[82px] top-[15px] h-[29px] w-[130px] -translate-x-1/2 text-center text-black"
+                <div
+                  className="absolute left-1/2 top-0 h-[104px] w-[530px] -translate-x-1/2 rounded-[72px] border border-solid border-white"
+                  style={{
+                    backgroundImage:
+                      'linear-gradient(100.751deg, rgba(255, 255, 255, 0.12) 0.52999%, rgba(63, 255, 245, 0.11) 51.312%, rgba(255, 255, 255, 0.114) 97.435%)',
+                  }}
+                />
+                <p className="absolute m-0 left-1/2 top-[17px] h-[68px] w-[386px] -translate-x-1/2 text-center text-[30px] font-light leading-[1.053] tracking-[0.6px] text-white">
+                  11.01.26 - 11.07.26
+                </p>
+                <p className="absolute m-0 left-[calc(50%+0.5px)] top-[57px] h-[47px] w-[575px] -translate-x-1/2 text-center text-[30px] font-light leading-[normal] text-white">
+                  PEEL TANGERINES. FEEL JEJU.
+                </p>
+              </div>
+
+              {/* Main logo frame */}
+              <div
+                ref={logoFrameRef}
+                className="absolute z-20"
                 style={{
-                  fontFamily: '"Neue Haas Grotesk Display Pro","Helvetica Neue",Helvetica,Arial,sans-serif',
-                  fontWeight: 400, // 55 Roman
-                  fontSize: 18,
-                  lineHeight: 1.053,
-                  letterSpacing: '0.36px',
+                  left: 433,
+                  top: 378 - heroCanvas.headerHeight,
+                  width: 575,
+                  height: 614,
                 }}
               >
-                Get Tickets
-              </span>
-            </a>
-          </div>
+                <img
+                  alt=""
+                  src={figmaAssets.glowEllipseSvg}
+                  className="absolute left-1/2 top-[287.5px] h-[940.6px] w-[940.6px] -translate-x-1/2 -translate-y-1/2 object-contain"
+                />
+                <img
+                  src={figmaAssets.heroTitleSvg}
+                  alt="Jeju tangerine festival"
+                  className="absolute left-[53px] top-[17px] h-[597px] w-[446px] object-contain"
+                />
+              </div>
+
+              {/* Decorations */}
+              <model-viewer
+                ref={shellRef}
+                src="/gltf/g1.glb"
+                className="pointer-events-none absolute z-0"
+                style={{
+                  left: 1017,
+                  top: 258 - heroCanvas.headerHeight + 40,
+                  width: 354.8065,
+                  height: 280.1722,
+                  backgroundColor: 'transparent',
+                  filter: 'saturate(1.08) contrast(1.06)',
+                  transformOrigin: 'center',
+                }}
+                camera-controls={false}
+                disable-pan
+                disable-zoom
+                disable-tap
+                interaction-prompt="none"
+                shadow-intensity="1"
+                shadow-softness="0.8"
+                exposure="1.45"
+                environment-image="legacy"
+                reveal="auto"
+              />
+              <model-viewer
+                ref={orangeLeftRef}
+                src="/gltf/t1.glb"
+                className="pointer-events-none absolute z-0"
+                style={{
+                  left: 33.2868,
+                  top: 461.5528 - heroCanvas.headerHeight + 40,
+                  width: 340.7182,
+                  height: 327.9672,
+                  backgroundColor: 'transparent',
+                  filter: 'saturate(1.08) contrast(1.06)',
+                  transformOrigin: 'center',
+                }}
+                camera-controls={false}
+                disable-pan
+                disable-zoom
+                disable-tap
+                interaction-prompt="none"
+                shadow-intensity="1"
+                shadow-softness="0.8"
+                exposure="1.45"
+                environment-image="legacy"
+                reveal="auto"
+              />
+              <model-viewer
+                ref={sliceRef}
+                src="/gltf/g3.glb"
+                className="pointer-events-none absolute z-0"
+                style={{
+                  left: 171.2913,
+                  top: 850 - heroCanvas.headerHeight + 40,
+                  width: 330.2893,
+                  height: 256.7225,
+                  backgroundColor: 'transparent',
+                  filter: 'saturate(1.08) contrast(1.06)',
+                  transformOrigin: 'center',
+                }}
+                camera-controls={false}
+                disable-pan
+                disable-zoom
+                disable-tap
+                interaction-prompt="none"
+                shadow-intensity="1"
+                shadow-softness="0.8"
+                exposure="1.45"
+                environment-image="legacy"
+                reveal="auto"
+              />
+              <model-viewer
+                ref={orangeRightRef}
+                src="/gltf/g4.glb"
+                className="pointer-events-none absolute z-0"
+                style={{
+                  left: 1108,
+                  top: 720 - heroCanvas.headerHeight + 40,
+                  width: 403,
+                  height: 395,
+                  backgroundColor: 'transparent',
+                  filter: 'saturate(1.08) contrast(1.06)',
+                  transformOrigin: 'center',
+                }}
+                camera-controls={false}
+                disable-pan
+                disable-zoom
+                disable-tap
+                interaction-prompt="none"
+                shadow-intensity="1"
+                shadow-softness="0.8"
+                exposure="1.45"
+                environment-image="legacy"
+                reveal="auto"
+              />
+
+              {/* Buttons */}
+              <a
+                ref={viewProgramRef}
+                href="#program"
+                className="absolute z-20 h-[50px] w-[163px] rounded-[100px]"
+                style={{
+                  left: 530,
+                  top: 1031 - heroCanvas.headerHeight + heroButtonYOffset,
+                }}
+              >
+                <span className="absolute left-0 top-0 h-[50px] w-[163px] rounded-[100px] opacity-80">
+                  <span className="absolute left-0 top-0 h-[50px] w-[163px] rounded-[100px] bg-[rgba(63,255,245,0.9)]" />
+                </span>
+                <span
+                  className="absolute left-[82px] top-[14px] h-[29px] w-[130px] -translate-x-1/2 text-center text-black"
+                  style={{
+                    fontFamily: '"Neue Haas Grotesk Display Pro","Helvetica Neue",Helvetica,Arial,sans-serif',
+                    fontWeight: 400, // 55 Roman
+                    fontSize: 18,
+                    lineHeight: 1.053,
+                    letterSpacing: '0.36px',
+                  }}
+                >
+                  View Program
+                </span>
+              </a>
+              <a
+                ref={getTicketsRef}
+                href="#location"
+                className="absolute z-20 h-[50px] w-[163px] rounded-[100px]"
+                style={{
+                  left: 747,
+                  top: 1031 - heroCanvas.headerHeight + heroButtonYOffset,
+                }}
+              >
+                <span className="absolute left-0 top-0 h-[50px] w-[163px] rounded-[100px] opacity-80">
+                  <span className="absolute left-0 top-0 h-[50px] w-[163px] rounded-[100px] bg-[rgba(255,255,255,0.9)]" />
+                </span>
+                <span
+                  className="absolute left-[82px] top-[15px] h-[29px] w-[130px] -translate-x-1/2 text-center text-black"
+                  style={{
+                    fontFamily: '"Neue Haas Grotesk Display Pro","Helvetica Neue",Helvetica,Arial,sans-serif',
+                    fontWeight: 400, // 55 Roman
+                    fontSize: 18,
+                    lineHeight: 1.053,
+                    letterSpacing: '0.36px',
+                  }}
+                >
+                  Get Tickets
+                </span>
+              </a>
+            </div>
+          </ClickSpark>
         </section>
 
         <section id="highlights" className="mx-auto max-w-6xl px-3 py-14 sm:px-4 sm:py-18">
