@@ -88,10 +88,10 @@ function App() {
 
   const pillRef = useRef<HTMLDivElement | null>(null)
   const logoFrameRef = useRef<HTMLDivElement | null>(null)
-  const shellRef = useRef<HTMLElement | null>(null)
-  const orangeLeftRef = useRef<HTMLElement | null>(null)
-  const sliceRef = useRef<HTMLElement | null>(null)
-  const orangeRightRef = useRef<HTMLElement | null>(null)
+  const t2Ref = useRef<HTMLElement | null>(null)
+  const t3Ref = useRef<HTMLElement | null>(null)
+  const t4Ref = useRef<HTMLElement | null>(null)
+  const g3Ref = useRef<HTMLElement | null>(null)
   const viewProgramRef = useRef<HTMLAnchorElement | null>(null)
   const getTicketsRef = useRef<HTMLAnchorElement | null>(null)
 
@@ -120,26 +120,25 @@ function App() {
     if (prefersReducedMotion) return
 
     const layers = [
-      { ref: shellRef, rotateDeg: 2.83, ampX: 6, ampY: 10, scaleAmp: 0.015, parallaxX: 0, parallaxY: 26, outwardSign: 1, outwardMax: 120, phase: 2.2, freq: 0.8 },
-      { ref: orangeLeftRef, rotateDeg: -35.88, ampX: 7, ampY: 12, scaleAmp: 0.018, parallaxX: 0, parallaxY: 28, outwardSign: -1, outwardMax: 140, phase: 3.4, freq: 0.85 },
-      { ref: sliceRef, rotateDeg: 20.82, ampX: 6, ampY: 10, scaleAmp: 0.015, parallaxX: 0, parallaxY: 24, outwardSign: -1, outwardMax: 100, phase: 4.1, freq: 0.75 },
-      { ref: orangeRightRef, rotateDeg: 0, ampX: 5, ampY: 10, scaleAmp: 0.015, parallaxX: 0, parallaxY: 22, outwardSign: 1, outwardMax: 160, phase: 5.0, freq: 0.78 },
+      { ref: t3Ref, rotateDeg: 2.83, ampX: 6, ampY: 10, scaleAmp: 0.015, parallaxY: 26, outwardSign: 1, outwardMax: 180, phase: 2.2, freq: 0.8 },
+      { ref: t2Ref, rotateDeg: -35.88, ampX: 7, ampY: 12, scaleAmp: 0.018, parallaxY: 28, outwardSign: -1, outwardMax: 210, phase: 3.4, freq: 0.85 },
+      { ref: g3Ref, rotateDeg: 20.82, ampX: 6, ampY: 10, scaleAmp: 0.015, parallaxY: 24, outwardSign: -1, outwardMax: 150, phase: 4.1, freq: 0.75 },
+      { ref: t4Ref, rotateDeg: 0, ampX: 5, ampY: 10, scaleAmp: 0.015, parallaxY: 22, outwardSign: 1, outwardMax: 230, phase: 5.0, freq: 0.78 },
     ] as const
 
-    const allInteractiveEls = [
+    const allEls = [
       pillRef.current,
       logoFrameRef.current,
       viewProgramRef.current,
       getTicketsRef.current,
-      shellRef.current,
-      orangeLeftRef.current,
-      sliceRef.current,
-      orangeRightRef.current,
+      t2Ref.current,
+      t3Ref.current,
+      t4Ref.current,
+      g3Ref.current,
     ].filter(Boolean) as HTMLElement[]
 
-    for (const layer of layers) {
-      const el = layer.ref.current
-      if (el) el.style.willChange = 'transform'
+    for (const el of allEls) {
+      el.style.willChange = 'transform'
     }
 
     let rafId = 0
@@ -168,10 +167,7 @@ function App() {
 
         const drift = Math.sin(t * layer.freq + layer.phase)
         const drift2 = Math.cos(t * layer.freq * 0.93 + layer.phase * 1.17)
-        const dx =
-          drift2 * layer.ampX +
-          centeredP * layer.parallaxX +
-          outward * layer.outwardMax * layer.outwardSign
+        const dx = drift2 * layer.ampX + outward * layer.outwardMax * layer.outwardSign
         const dy = drift * layer.ampY + centeredP * layer.parallaxY
         const scale = 1 + drift * layer.scaleAmp
         const rotate = layer.rotateDeg ? ` rotate(${layer.rotateDeg}deg)` : ''
@@ -184,7 +180,7 @@ function App() {
     rafId = window.requestAnimationFrame(tick)
     return () => {
       window.cancelAnimationFrame(rafId)
-      for (const el of allInteractiveEls) {
+      for (const el of allEls) {
         el.style.transform = ''
         el.style.willChange = ''
       }
@@ -296,102 +292,100 @@ function App() {
                 />
               </div>
 
-              {/* Decorations */}
+              {/* 3D decorations */}
               <model-viewer
-                ref={shellRef}
-                src="/gltf/g1.glb"
+                ref={t2Ref}
+                src="/gltf/t2.glb"
                 className="pointer-events-none absolute z-0"
                 style={{
-                  left: 1017,
-                  top: 258 - heroCanvas.headerHeight + 40,
-                  width: 354.8065,
-                  height: 280.1722,
+                  left: 20,
+                  top: 432.2308,
+                  width: 299.832,
+                  height: 288.6111,
                   backgroundColor: 'transparent',
-                  filter: 'saturate(1.08) contrast(1.06)',
+                  opacity: 1,
+                  filter: 'saturate(1.3)',
                   transformOrigin: 'center',
+                  transition: 'opacity 180ms ease, filter 180ms ease',
                 }}
-                camera-controls={false}
+                interaction-prompt="none"
+                environment-image="legacy"
+                exposure="1.5"
+                auto-rotate
+                rotation-per-second="18deg"
                 disable-pan
                 disable-zoom
                 disable-tap
-                interaction-prompt="none"
-                shadow-intensity="1"
-                shadow-softness="0.8"
-                exposure="1.45"
-                environment-image="legacy"
-                reveal="auto"
               />
               <model-viewer
-                ref={orangeLeftRef}
-                src="/gltf/t1.glb"
-                className="pointer-events-none absolute z-0"
-                style={{
-                  left: 33.2868,
-                  top: 461.5528 - heroCanvas.headerHeight + 40,
-                  width: 340.7182,
-                  height: 327.9672,
-                  backgroundColor: 'transparent',
-                  filter: 'saturate(1.08) contrast(1.06)',
-                  transformOrigin: 'center',
-                }}
-                camera-controls={false}
-                disable-pan
-                disable-zoom
-                disable-tap
-                interaction-prompt="none"
-                shadow-intensity="1"
-                shadow-softness="0.8"
-                exposure="1.45"
-                environment-image="legacy"
-                reveal="auto"
-              />
-              <model-viewer
-                ref={sliceRef}
-                src="/gltf/g3.glb"
-                className="pointer-events-none absolute z-0"
-                style={{
-                  left: 171.2913,
-                  top: 850 - heroCanvas.headerHeight + 40,
-                  width: 330.2893,
-                  height: 256.7225,
-                  backgroundColor: 'transparent',
-                  filter: 'saturate(1.08) contrast(1.06)',
-                  transformOrigin: 'center',
-                }}
-                camera-controls={false}
-                disable-pan
-                disable-zoom
-                disable-tap
-                interaction-prompt="none"
-                shadow-intensity="1"
-                shadow-softness="0.8"
-                exposure="1.45"
-                environment-image="legacy"
-                reveal="auto"
-              />
-              <model-viewer
-                ref={orangeRightRef}
+                ref={g3Ref}
                 src="/gltf/g4.glb"
                 className="pointer-events-none absolute z-0"
                 style={{
-                  left: 1108,
+                  left: 105,
+                  top: 785.5967,
+                  width: 369.924,
+                  height: 287.5292,
+                  backgroundColor: 'transparent',
+                  opacity: 1,
+                  transformOrigin: 'center',
+                  transition: 'opacity 180ms ease, filter 180ms ease',
+                }}
+                interaction-prompt="none"
+                environment-image="legacy"
+                exposure="1.35"
+                auto-rotate
+                rotation-per-second="18deg"
+                disable-pan
+                disable-zoom
+                disable-tap
+              />
+              <model-viewer
+                ref={t4Ref}
+                src="/gltf/t4.glb"
+                className="pointer-events-none absolute z-0"
+                style={{
+                  left: 1145,
                   top: 720 - heroCanvas.headerHeight + 40,
                   width: 403,
                   height: 395,
                   backgroundColor: 'transparent',
-                  filter: 'saturate(1.08) contrast(1.06)',
+                  opacity: 0.7,
+                  filter: 'brightness(1.22) saturate(1.45)',
                   transformOrigin: 'center',
+                  transition: 'opacity 180ms ease, filter 180ms ease',
                 }}
-                camera-controls={false}
+                interaction-prompt="none"
+                environment-image="legacy"
+                exposure="1.5"
+                auto-rotate
+                rotation-per-second="18deg"
                 disable-pan
                 disable-zoom
                 disable-tap
+              />
+              <model-viewer
+                ref={t3Ref}
+                src="/gltf/t3.glb"
+                className="pointer-events-none absolute z-0"
+                style={{
+                  left: 1075,
+                  top: 225.8103,
+                  width: 312.2297,
+                  height: 246.5515,
+                  backgroundColor: 'transparent',
+                  opacity: 1,
+                  transformOrigin: 'center',
+                  transition: 'opacity 180ms ease, filter 180ms ease',
+                }}
                 interaction-prompt="none"
-                shadow-intensity="1"
-                shadow-softness="0.8"
-                exposure="1.45"
                 environment-image="legacy"
-                reveal="auto"
+                exposure="1.35"
+                auto-rotate
+                rotation-per-second="18deg"
+                disable-pan
+                disable-zoom
+                disable-tap
               />
 
               {/* Buttons */}
