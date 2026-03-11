@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-const imgWireframe1 = 'http://localhost:3845/assets/27f55a6f7c851b78eaf6b603168f5c6724b39b89.png'
 const imgImage69 = 'http://localhost:3845/assets/9e68c60b7bf7096e6502807c910f71435c656295.png'
 const imgImage85 = 'http://localhost:3845/assets/0ab8cf7d93dfacba70b8243c0ffdb8f6976b79bb.png'
 const img202603011647221 = 'http://localhost:3845/assets/90cfa5162859cc6965a0efe13f4528204a510d9e.png'
@@ -15,10 +14,10 @@ const img40782041286919481 = 'http://localhost:3845/assets/e7abe80668be157e03d40
 const imgImage86 = 'http://localhost:3845/assets/b67bafbec111d30865748cb06dba81e08a594746.png'
 const img1 = 'http://localhost:3845/assets/5b22fcb0021fba51089ecb7d85d2423eca6533f1.png'
 const img2 = 'http://localhost:3845/assets/c8465d0ff5aa114591f2d98dc378ffb5d5bf0af8.png'
+const imgBasemapImage = '/figma/map.png?v=2'
 const imgRectangle2 = 'http://localhost:3845/assets/0facbaa74f677ab1889ef7d7963061ea8b7d7033.svg'
 const imgFrame11 = 'http://localhost:3845/assets/c2f8a6677975ce8ba606da99846550f4b791934c.svg'
 const imgFrame10 = 'http://localhost:3845/assets/eca861d6908747be249d14f959111144a840bff9.svg'
-const imgEllipse2 = 'http://localhost:3845/assets/b41aee11fd4a9295d3ce929dc1594cf993eb78cb.svg'
 const imgEllipse10 = 'http://localhost:3845/assets/101efbca94ee897a2ac40d509f6297218e8bcd31.svg'
 const imgFrame22 = 'http://localhost:3845/assets/76cd785b2bc89a810b5ce3f54f6bff95c5abb26e.svg'
 const imgFrame23 = 'http://localhost:3845/assets/a8c07dfee0f2147105f0484dbdad121d1bea9f50.svg'
@@ -48,6 +47,18 @@ const neueHaasBold = {
 
 function App() {
   const [scale, setScale] = useState(1)
+  const [showAnalogGyulbatInfo, setShowAnalogGyulbatInfo] = useState(false)
+  const [showJejuInACitrusInfo, setShowJejuInACitrusInfo] = useState(false)
+  const [showCafeGyulkkotDarakInfo, setShowCafeGyulkkotDarakInfo] = useState(false)
+  const [showDolbitnaArtFarmInfo, setShowDolbitnaArtFarmInfo] = useState(false)
+  const [showSanghyowonInfo, setShowSanghyowonInfo] = useState(false)
+  const [showBaekrokDamInfo, setShowBaekrokDamInfo] = useState(false)
+  const analogGyulbatHoverTimeoutRef = useRef<number | null>(null)
+  const jejuInACitrusHoverTimeoutRef = useRef<number | null>(null)
+  const cafeGyulkkotDarakHoverTimeoutRef = useRef<number | null>(null)
+  const dolbitnaArtFarmHoverTimeoutRef = useRef<number | null>(null)
+  const sanghyowonHoverTimeoutRef = useRef<number | null>(null)
+  const baekrokDamHoverTimeoutRef = useRef<number | null>(null)
 
   useEffect(() => {
     const updateScale = () => {
@@ -60,6 +71,29 @@ function App() {
     updateScale()
     window.addEventListener('resize', updateScale)
     return () => window.removeEventListener('resize', updateScale)
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (analogGyulbatHoverTimeoutRef.current !== null) {
+        window.clearTimeout(analogGyulbatHoverTimeoutRef.current)
+      }
+      if (jejuInACitrusHoverTimeoutRef.current !== null) {
+        window.clearTimeout(jejuInACitrusHoverTimeoutRef.current)
+      }
+      if (cafeGyulkkotDarakHoverTimeoutRef.current !== null) {
+        window.clearTimeout(cafeGyulkkotDarakHoverTimeoutRef.current)
+      }
+      if (dolbitnaArtFarmHoverTimeoutRef.current !== null) {
+        window.clearTimeout(dolbitnaArtFarmHoverTimeoutRef.current)
+      }
+      if (sanghyowonHoverTimeoutRef.current !== null) {
+        window.clearTimeout(sanghyowonHoverTimeoutRef.current)
+      }
+      if (baekrokDamHoverTimeoutRef.current !== null) {
+        window.clearTimeout(baekrokDamHoverTimeoutRef.current)
+      }
+    }
   }, [])
 
   return (
@@ -76,10 +110,7 @@ function App() {
           data-name="Wireframe - 1"
           data-node-id="175:1550"
         >
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-          <div className="absolute inset-0 bg-white" />
-          <img alt="" className="absolute size-full max-w-none object-cover" src={imgWireframe1} />
-        </div>
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-white" />
         <div className="absolute left-1/2 top-[824px] h-[257px] w-[720px] bg-[#d9d9d9]" data-node-id="177:1686" />
         <div className="absolute left-[-2px] top-[944px] h-[137px] w-[720px] bg-[#d9d9d9]" data-node-id="177:1687" />
         <div className="absolute left-0 top-0 flex h-[7625px] w-[1440.001px] items-center justify-center">
@@ -429,13 +460,22 @@ function App() {
           className="absolute left-[calc(5%+1px)] top-[3019px] h-[535px] w-[857px] rounded-[20px] border border-solid border-white"
           data-node-id="207:1011"
         >
+          <div className="absolute left-[-1px] top-[-1px] h-[535px] w-[857px] rounded-[20px]" data-name="Basemap image" data-node-id="241:3886">
+            <div className="absolute inset-0 overflow-hidden rounded-[20px] pointer-events-none">
+              <img
+                alt=""
+                className="absolute left-[0.06%] top-[-3.93%] h-[120%] w-[99.88%] max-w-none"
+                src={imgBasemapImage}
+              />
+            </div>
+          </div>
           <div
-            className="absolute left-[-1px] top-[-1px] h-[535px] w-[857px] rounded-[20px] bg-[#d9d9d9]"
+            className="absolute left-[-1px] top-[-1px] h-[535px] w-[857px] rounded-[20px] bg-[#eb3604] mix-blend-overlay"
             data-name="map"
             data-node-id="205:881"
           />
           <p
-            className="absolute left-[31px] top-[465px] m-0 h-[35px] w-[519px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
+            className="absolute left-[31px] top-[465px] m-0 h-[35px] w-[519px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-[#8b0e0e]"
             style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
             data-node-id="205:882"
           >
@@ -554,6 +594,608 @@ function App() {
                 </div>
               </div>
             </div>
+            <button
+              type="button"
+              aria-label="Show Analog Gyulbat details"
+              className="absolute left-[313px] top-[17px] z-20 h-[292px] w-[357px] cursor-pointer bg-transparent"
+              style={{ clipPath: 'polygon(47% 0%, 89% 15%, 100% 54%, 64% 100%, 36% 100%, 0% 54%, 11% 15%)' }}
+              onMouseEnter={() => {
+                if (analogGyulbatHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(analogGyulbatHoverTimeoutRef.current)
+                }
+                analogGyulbatHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowAnalogGyulbatInfo(true)
+                  analogGyulbatHoverTimeoutRef.current = null
+                }, 200)
+              }}
+              onMouseLeave={() => {
+                if (analogGyulbatHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(analogGyulbatHoverTimeoutRef.current)
+                  analogGyulbatHoverTimeoutRef.current = null
+                }
+                setShowAnalogGyulbatInfo(false)
+              }}
+              onFocus={() => {
+                if (analogGyulbatHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(analogGyulbatHoverTimeoutRef.current)
+                }
+                analogGyulbatHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowAnalogGyulbatInfo(true)
+                  analogGyulbatHoverTimeoutRef.current = null
+                }, 200)
+              }}
+              onBlur={() => {
+                if (analogGyulbatHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(analogGyulbatHoverTimeoutRef.current)
+                  analogGyulbatHoverTimeoutRef.current = null
+                }
+                setShowAnalogGyulbatInfo(false)
+              }}
+            />
+            <button
+              type="button"
+              aria-label="Show Jeju In-a-Citrus details"
+              className="absolute left-[58px] top-[185px] z-20 h-[318px] w-[315px] cursor-pointer bg-transparent"
+              style={{ clipPath: 'polygon(28% 0%, 100% 0%, 100% 58%, 73% 99%, 17% 100%, 0% 68%, 0% 20%)' }}
+              onMouseEnter={() => {
+                if (jejuInACitrusHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(jejuInACitrusHoverTimeoutRef.current)
+                }
+                jejuInACitrusHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowJejuInACitrusInfo(true)
+                  jejuInACitrusHoverTimeoutRef.current = null
+                }, 200)
+              }}
+              onMouseLeave={() => {
+                if (jejuInACitrusHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(jejuInACitrusHoverTimeoutRef.current)
+                  jejuInACitrusHoverTimeoutRef.current = null
+                }
+                setShowJejuInACitrusInfo(false)
+              }}
+              onFocus={() => {
+                if (jejuInACitrusHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(jejuInACitrusHoverTimeoutRef.current)
+                }
+                jejuInACitrusHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowJejuInACitrusInfo(true)
+                  jejuInACitrusHoverTimeoutRef.current = null
+                }, 200)
+              }}
+              onBlur={() => {
+                if (jejuInACitrusHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(jejuInACitrusHoverTimeoutRef.current)
+                  jejuInACitrusHoverTimeoutRef.current = null
+                }
+                setShowJejuInACitrusInfo(false)
+              }}
+            />
+            <button
+              type="button"
+              aria-label="Show Cafe Gyulkkot-darak details"
+              className="absolute left-[57px] top-[493px] z-20 h-[242px] w-[318px] cursor-pointer bg-transparent"
+              style={{ clipPath: 'polygon(22% 0%, 100% 0%, 84% 100%, 19% 100%, 0% 60%, 0% 18%)' }}
+              onMouseEnter={() => {
+                if (cafeGyulkkotDarakHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(cafeGyulkkotDarakHoverTimeoutRef.current)
+                }
+                cafeGyulkkotDarakHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowCafeGyulkkotDarakInfo(true)
+                  cafeGyulkkotDarakHoverTimeoutRef.current = null
+                }, 200)
+              }}
+              onMouseLeave={() => {
+                if (cafeGyulkkotDarakHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(cafeGyulkkotDarakHoverTimeoutRef.current)
+                  cafeGyulkkotDarakHoverTimeoutRef.current = null
+                }
+                setShowCafeGyulkkotDarakInfo(false)
+              }}
+              onFocus={() => {
+                if (cafeGyulkkotDarakHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(cafeGyulkkotDarakHoverTimeoutRef.current)
+                }
+                cafeGyulkkotDarakHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowCafeGyulkkotDarakInfo(true)
+                  cafeGyulkkotDarakHoverTimeoutRef.current = null
+                }, 200)
+              }}
+              onBlur={() => {
+                if (cafeGyulkkotDarakHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(cafeGyulkkotDarakHoverTimeoutRef.current)
+                  cafeGyulkkotDarakHoverTimeoutRef.current = null
+                }
+                setShowCafeGyulkkotDarakInfo(false)
+              }}
+            />
+            <button
+              type="button"
+              aria-label="Show Dolbitna Art Farm details"
+              className="absolute left-[287px] top-[525px] z-20 h-[341px] w-[405px] cursor-pointer bg-transparent"
+              style={{ clipPath: 'polygon(28% 0%, 72% 0%, 100% 84%, 59% 100%, 41% 100%, 0% 84%)' }}
+              onMouseEnter={() => {
+                if (dolbitnaArtFarmHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(dolbitnaArtFarmHoverTimeoutRef.current)
+                }
+                dolbitnaArtFarmHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowDolbitnaArtFarmInfo(true)
+                  dolbitnaArtFarmHoverTimeoutRef.current = null
+                }, 200)
+              }}
+              onMouseLeave={() => {
+                if (dolbitnaArtFarmHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(dolbitnaArtFarmHoverTimeoutRef.current)
+                  dolbitnaArtFarmHoverTimeoutRef.current = null
+                }
+                setShowDolbitnaArtFarmInfo(false)
+              }}
+              onFocus={() => {
+                if (dolbitnaArtFarmHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(dolbitnaArtFarmHoverTimeoutRef.current)
+                }
+                dolbitnaArtFarmHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowDolbitnaArtFarmInfo(true)
+                  dolbitnaArtFarmHoverTimeoutRef.current = null
+                }, 200)
+              }}
+              onBlur={() => {
+                if (dolbitnaArtFarmHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(dolbitnaArtFarmHoverTimeoutRef.current)
+                  dolbitnaArtFarmHoverTimeoutRef.current = null
+                }
+                setShowDolbitnaArtFarmInfo(false)
+              }}
+            />
+            <button
+              type="button"
+              aria-label="Show Sanghyowon Botanical Garden details"
+              className="absolute left-[602px] top-[494px] z-20 h-[260px] w-[306px] cursor-pointer bg-transparent"
+              style={{ clipPath: 'polygon(18% 0%, 81% 0%, 100% 24%, 100% 72%, 81% 100%, 18% 100%, 0% 56%, 0% 20%)' }}
+              onMouseEnter={() => {
+                if (sanghyowonHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(sanghyowonHoverTimeoutRef.current)
+                }
+                sanghyowonHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowSanghyowonInfo(true)
+                  sanghyowonHoverTimeoutRef.current = null
+                }, 200)
+              }}
+              onMouseLeave={() => {
+                if (sanghyowonHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(sanghyowonHoverTimeoutRef.current)
+                  sanghyowonHoverTimeoutRef.current = null
+                }
+                setShowSanghyowonInfo(false)
+              }}
+              onFocus={() => {
+                if (sanghyowonHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(sanghyowonHoverTimeoutRef.current)
+                }
+                sanghyowonHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowSanghyowonInfo(true)
+                  sanghyowonHoverTimeoutRef.current = null
+                }, 200)
+              }}
+              onBlur={() => {
+                if (sanghyowonHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(sanghyowonHoverTimeoutRef.current)
+                  sanghyowonHoverTimeoutRef.current = null
+                }
+                setShowSanghyowonInfo(false)
+              }}
+            />
+            <button
+              type="button"
+              aria-label="Show Baekrok-dam Farm details"
+              className="absolute left-[602px] top-[183px] z-20 h-[318px] w-[316px] cursor-pointer bg-transparent"
+              style={{ clipPath: 'polygon(18% 0%, 84% 0%, 100% 30%, 100% 82%, 75% 100%, 20% 100%, 0% 70%, 0% 22%)' }}
+              onMouseEnter={() => {
+                if (baekrokDamHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(baekrokDamHoverTimeoutRef.current)
+                }
+                baekrokDamHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowBaekrokDamInfo(true)
+                  baekrokDamHoverTimeoutRef.current = null
+                }, 200)
+              }}
+              onMouseLeave={() => {
+                if (baekrokDamHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(baekrokDamHoverTimeoutRef.current)
+                  baekrokDamHoverTimeoutRef.current = null
+                }
+                setShowBaekrokDamInfo(false)
+              }}
+              onFocus={() => {
+                if (baekrokDamHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(baekrokDamHoverTimeoutRef.current)
+                }
+                baekrokDamHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowBaekrokDamInfo(true)
+                  baekrokDamHoverTimeoutRef.current = null
+                }, 200)
+              }}
+              onBlur={() => {
+                if (baekrokDamHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(baekrokDamHoverTimeoutRef.current)
+                  baekrokDamHoverTimeoutRef.current = null
+                }
+                setShowBaekrokDamInfo(false)
+              }}
+            />
+            <div
+              className="absolute left-[315px] top-[43px] h-[282px] w-[779px]"
+              onMouseEnter={() => {
+                if (analogGyulbatHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(analogGyulbatHoverTimeoutRef.current)
+                }
+                analogGyulbatHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowAnalogGyulbatInfo(true)
+                  analogGyulbatHoverTimeoutRef.current = null
+                }, 200)
+              }}
+              onMouseLeave={() => {
+                if (analogGyulbatHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(analogGyulbatHoverTimeoutRef.current)
+                  analogGyulbatHoverTimeoutRef.current = null
+                }
+                setShowAnalogGyulbatInfo(false)
+              }}
+            >
+              <button
+                type="button"
+                aria-label="Show Analog Gyulbat details"
+                className="absolute left-[64px] top-[84px] h-[198px] w-[338px] cursor-pointer rounded-[999px] bg-transparent"
+                onFocus={() => {
+                  if (analogGyulbatHoverTimeoutRef.current !== null) {
+                    window.clearTimeout(analogGyulbatHoverTimeoutRef.current)
+                  }
+                  analogGyulbatHoverTimeoutRef.current = window.setTimeout(() => {
+                    setShowAnalogGyulbatInfo(true)
+                    analogGyulbatHoverTimeoutRef.current = null
+                  }, 200)
+                }}
+                onBlur={() => {
+                  if (analogGyulbatHoverTimeoutRef.current !== null) {
+                    window.clearTimeout(analogGyulbatHoverTimeoutRef.current)
+                    analogGyulbatHoverTimeoutRef.current = null
+                  }
+                  setShowAnalogGyulbatInfo(false)
+                }}
+              />
+              <div
+                className={`absolute left-[58px] top-0 h-[241px] w-[721px] transition-all duration-300 ease-out ${
+                  showAnalogGyulbatInfo
+                    ? 'translate-y-0 opacity-100 blur-0'
+                    : 'pointer-events-none translate-y-2 opacity-0 blur-[2px]'
+                }`}
+                data-node-id="210:1159"
+              >
+                <div className="absolute left-[159px] top-0 contents" data-node-id="201:438">
+                  <div
+                    className="absolute left-[159px] top-0 h-[119px] w-[562px] rounded-[96px] border border-solid border-white shadow-[0px_4px_16.5px_0px_rgba(0,0,0,0.1)]"
+                    data-node-id="201:433"
+                    style={{
+                      backgroundImage:
+                        'linear-gradient(99.9799deg, rgba(255, 255, 255, 0.17) 0.52999%, rgba(125, 153, 152, 0.24) 17.302%, rgba(125, 153, 152, 0.24) 81.595%, rgba(255, 255, 255, 0.17) 97.435%)',
+                    }}
+                  />
+                  <p
+                    className="absolute left-[207px] top-[21px] m-0 h-[64.834px] w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-white"
+                    style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+                    data-node-id="201:432"
+                  >
+                    During the tangerine harvest season, visitors can pick tangerines directly from pesticide-free orchards. Photo spots arranged throughout the orchard create a special and memorable citrus-picking experience in Jeju.
+                  </p>
+                </div>
+                <div
+                  className="-translate-x-1/2 absolute left-[116.5px] top-[158px] w-[233px] text-center text-[24px] not-italic leading-[1.28] tracking-[0.48px] text-[#8b0e0e]"
+                  style={{ fontFamily: '"Pretendard", sans-serif', fontWeight: 600, letterSpacing: '0.48px' }}
+                  data-node-id="201:332"
+                >
+                  <p className="m-0 block">Analog Gyulbat</p>
+                  <p className="m-0 block">아날로그 귤밭</p>
+                </div>
+              </div>
+            </div>
+            <div
+              className="absolute left-[-179px] top-[257px] h-[225px] w-[573px]"
+              onMouseEnter={() => {
+                if (jejuInACitrusHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(jejuInACitrusHoverTimeoutRef.current)
+                }
+                jejuInACitrusHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowJejuInACitrusInfo(true)
+                  jejuInACitrusHoverTimeoutRef.current = null
+                }, 200)
+              }}
+              onMouseLeave={() => {
+                if (jejuInACitrusHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(jejuInACitrusHoverTimeoutRef.current)
+                  jejuInACitrusHoverTimeoutRef.current = null
+                }
+                setShowJejuInACitrusInfo(false)
+              }}
+            >
+              <button
+                type="button"
+                aria-label="Show Jeju In-a-Citrus details"
+                className="absolute left-[284px] top-[8px] h-[204px] w-[252px] cursor-pointer rounded-[999px] bg-transparent"
+                onFocus={() => {
+                  if (jejuInACitrusHoverTimeoutRef.current !== null) {
+                    window.clearTimeout(jejuInACitrusHoverTimeoutRef.current)
+                  }
+                  jejuInACitrusHoverTimeoutRef.current = window.setTimeout(() => {
+                    setShowJejuInACitrusInfo(true)
+                    jejuInACitrusHoverTimeoutRef.current = null
+                  }, 200)
+                }}
+                onBlur={() => {
+                  if (jejuInACitrusHoverTimeoutRef.current !== null) {
+                    window.clearTimeout(jejuInACitrusHoverTimeoutRef.current)
+                    jejuInACitrusHoverTimeoutRef.current = null
+                  }
+                  setShowJejuInACitrusInfo(false)
+                }}
+              />
+              <div
+                className={`absolute left-0 top-0 h-[225px] w-[573px] transition-all duration-300 ease-out ${
+                  showJejuInACitrusInfo
+                    ? 'translate-y-0 opacity-100 blur-0'
+                    : 'pointer-events-none translate-y-2 opacity-0 blur-[2px]'
+                }`}
+                data-node-id="210:1164"
+              >
+                <div className="absolute left-0 top-0 contents" data-node-id="201:855">
+                  <div
+                    className="absolute left-0 top-0 h-[119px] w-[562px] rounded-[96px] border border-solid border-white shadow-[0px_4px_16.5px_0px_rgba(0,0,0,0.1)]"
+                    data-node-id="201:856"
+                    style={{
+                      backgroundImage:
+                        'linear-gradient(99.9799deg, rgba(255, 255, 255, 0.17) 0.52999%, rgba(125, 153, 152, 0.24) 17.302%, rgba(125, 153, 152, 0.24) 81.595%, rgba(255, 255, 255, 0.17) 97.435%)',
+                    }}
+                  />
+                  <p
+                    className="absolute left-[48px] top-[31px] m-0 h-[47px] w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-white"
+                    style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+                    data-node-id="201:857"
+                  >
+                    A cafe where visitors can enjoy tangerine-picking experiences and relax. A dedicated photo zone in the orchard offers a popular spot for scenic and memorable photos.
+                  </p>
+                </div>
+                <div
+                  className="absolute left-[340px] top-[142px] w-[233px] text-[24px] not-italic leading-[1.28] tracking-[0.48px] text-[#8b0e0e]"
+                  style={{ fontFamily: '"Pretendard", sans-serif', fontWeight: 600, letterSpacing: '0.48px' }}
+                  data-node-id="201:339"
+                >
+                  <p className="m-0 block">Jeju In-a-Citrus</p>
+                  <p className="m-0 block">제주에인감귤밭</p>
+                </div>
+              </div>
+            </div>
+            <div
+              className="absolute left-[-179px] top-[501px] h-[196px] w-[562px]"
+              onMouseEnter={() => {
+                if (cafeGyulkkotDarakHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(cafeGyulkkotDarakHoverTimeoutRef.current)
+                }
+                cafeGyulkkotDarakHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowCafeGyulkkotDarakInfo(true)
+                  cafeGyulkkotDarakHoverTimeoutRef.current = null
+                }, 200)
+              }}
+              onMouseLeave={() => {
+                if (cafeGyulkkotDarakHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(cafeGyulkkotDarakHoverTimeoutRef.current)
+                  cafeGyulkkotDarakHoverTimeoutRef.current = null
+                }
+                setShowCafeGyulkkotDarakInfo(false)
+              }}
+            >
+              <button
+                type="button"
+                aria-label="Show Cafe Gyulkkot-darak details"
+                className="absolute left-[280px] top-0 h-[196px] w-[256px] cursor-pointer rounded-[999px] bg-transparent"
+                onFocus={() => {
+                  if (cafeGyulkkotDarakHoverTimeoutRef.current !== null) {
+                    window.clearTimeout(cafeGyulkkotDarakHoverTimeoutRef.current)
+                  }
+                  cafeGyulkkotDarakHoverTimeoutRef.current = window.setTimeout(() => {
+                    setShowCafeGyulkkotDarakInfo(true)
+                    cafeGyulkkotDarakHoverTimeoutRef.current = null
+                  }, 200)
+                }}
+                onBlur={() => {
+                  if (cafeGyulkkotDarakHoverTimeoutRef.current !== null) {
+                    window.clearTimeout(cafeGyulkkotDarakHoverTimeoutRef.current)
+                    cafeGyulkkotDarakHoverTimeoutRef.current = null
+                  }
+                  setShowCafeGyulkkotDarakInfo(false)
+                }}
+              />
+              <div
+                className={`absolute left-0 top-0 h-[196px] w-[562px] transition-all duration-300 ease-out ${
+                  showCafeGyulkkotDarakInfo
+                    ? 'translate-y-0 opacity-100 blur-0'
+                    : 'pointer-events-none translate-y-2 opacity-0 blur-[2px]'
+                }`}
+                data-node-id="210:1163"
+              >
+                <div className="absolute left-0 top-[77px] contents" data-node-id="201:719">
+                  <div
+                    className="absolute left-0 top-[77px] h-[119px] w-[562px] rounded-[96px] border border-solid border-white shadow-[0px_4px_16.5px_0px_rgba(0,0,0,0.1)]"
+                    data-node-id="201:720"
+                    style={{
+                      backgroundImage:
+                        'linear-gradient(99.9799deg, rgba(255, 255, 255, 0.17) 0.52999%, rgba(125, 153, 152, 0.24) 17.302%, rgba(125, 153, 152, 0.24) 81.595%, rgba(255, 255, 255, 0.17) 97.435%)',
+                    }}
+                  />
+                  <p
+                    className="absolute left-[48px] top-[108px] m-0 h-[47px] w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-white"
+                    style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+                    data-node-id="201:721"
+                  >
+                    The Jeju green tea cream latte and green tangerine Americano are popular menu items. The cafe is also known for its scenic walking paths and photo spots.
+                  </p>
+                </div>
+                <div
+                  className="absolute left-[340px] top-0 w-[221px] text-[24px] not-italic leading-[1.28] tracking-[0.48px] text-[#8b0e0e]"
+                  style={{ fontFamily: '"Pretendard", sans-serif', fontWeight: 600, letterSpacing: '0.48px' }}
+                  data-node-id="201:340"
+                >
+                  <p className="m-0 block">Cafe Gyulkkot-</p>
+                  <p className="m-0 block">darak</p>
+                  <p className="m-0 block">귤꽃다락</p>
+                </div>
+              </div>
+            </div>
+            <div
+              className="absolute left-[-179px] top-[766px] h-[137px] w-[767px]"
+              onMouseEnter={() => {
+                if (dolbitnaArtFarmHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(dolbitnaArtFarmHoverTimeoutRef.current)
+                }
+                dolbitnaArtFarmHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowDolbitnaArtFarmInfo(true)
+                  dolbitnaArtFarmHoverTimeoutRef.current = null
+                }, 200)
+              }}
+              onMouseLeave={() => {
+                if (dolbitnaArtFarmHoverTimeoutRef.current !== null) {
+                  window.clearTimeout(dolbitnaArtFarmHoverTimeoutRef.current)
+                  dolbitnaArtFarmHoverTimeoutRef.current = null
+                }
+                setShowDolbitnaArtFarmInfo(false)
+              }}
+            >
+              <button
+                type="button"
+                aria-label="Show Dolbitna Art Farm details"
+                className="absolute left-[470px] top-0 h-[160px] w-[300px] cursor-pointer rounded-[999px] bg-transparent"
+                onFocus={() => {
+                  if (dolbitnaArtFarmHoverTimeoutRef.current !== null) {
+                    window.clearTimeout(dolbitnaArtFarmHoverTimeoutRef.current)
+                  }
+                  dolbitnaArtFarmHoverTimeoutRef.current = window.setTimeout(() => {
+                    setShowDolbitnaArtFarmInfo(true)
+                    dolbitnaArtFarmHoverTimeoutRef.current = null
+                  }, 200)
+                }}
+                onBlur={() => {
+                  if (dolbitnaArtFarmHoverTimeoutRef.current !== null) {
+                    window.clearTimeout(dolbitnaArtFarmHoverTimeoutRef.current)
+                    dolbitnaArtFarmHoverTimeoutRef.current = null
+                  }
+                  setShowDolbitnaArtFarmInfo(false)
+                }}
+              />
+              <div
+                className={`absolute left-0 top-0 h-[137px] w-[767px] transition-all duration-300 ease-out ${
+                  showDolbitnaArtFarmInfo
+                    ? 'translate-y-0 opacity-100 blur-0'
+                    : 'pointer-events-none translate-y-2 opacity-0 blur-[2px]'
+                }`}
+                data-node-id="241:3915"
+              >
+                <div
+                  className="absolute left-0 top-[18px] h-[119px] w-[562px] rounded-[96px] border border-solid border-white shadow-[0px_4px_16.5px_0px_rgba(0,0,0,0.1)]"
+                  data-node-id="201:587"
+                  style={{
+                    backgroundImage:
+                      'linear-gradient(99.9799deg, rgba(255, 255, 255, 0.17) 0.52999%, rgba(125, 153, 152, 0.24) 17.302%, rgba(125, 153, 152, 0.24) 81.595%, rgba(255, 255, 255, 0.17) 97.435%)',
+                  }}
+                />
+                <p
+                  className="absolute left-[48px] top-[39px] m-0 h-[47px] w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-white"
+                  style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+                  data-node-id="201:588"
+                >
+                  Promotes and preserves the tradition of Jeju stone walls while encouraging their repair and maintenance across the country. Visitors can also join volunteer experiences building traditional Jeju stone walls.
+                </p>
+                <div
+                  className="absolute left-[544px] top-[-57px] flex h-[83px] w-[267px] flex-col items-center justify-start text-center text-[24px] not-italic leading-[1.28] tracking-[0.48px] text-[#8b0e0e]"
+                  style={{ fontFamily: '"Pretendard", sans-serif', fontWeight: 600, letterSpacing: '0.48px' }}
+                  data-node-id="201:341"
+                >
+                  <p className="m-0 block">Dolbitna Art Farm</p>
+                  <p className="m-0 block">돌빛나 예술농장</p>
+                </div>
+              </div>
+            </div>
+            <div className="absolute left-[565px] top-[502px] h-[222px] w-[590px]">
+              <div
+                className={`absolute left-0 top-0 h-[222px] w-[590px] transition-all duration-300 ease-out ${
+                  showSanghyowonInfo
+                    ? 'translate-y-0 opacity-100 blur-0'
+                    : 'pointer-events-none translate-y-2 opacity-0 blur-[2px]'
+                }`}
+                data-node-id="210:1161"
+              >
+                <div className="absolute left-0 top-0 h-[222px] w-[590px]" data-node-id="241:3932">
+                  <div className="absolute left-[28px] top-[103px] contents" data-node-id="201:456">
+                    <div
+                      className="absolute left-[28px] top-[103px] h-[119px] w-[562px] rounded-[96px] border border-solid border-white shadow-[0px_4px_16.5px_0px_rgba(0,0,0,0.1)]"
+                      data-node-id="201:457"
+                      style={{
+                        backgroundImage:
+                          'linear-gradient(99.9799deg, rgba(255, 255, 255, 0.17) 0.52999%, rgba(125, 153, 152, 0.24) 17.302%, rgba(125, 153, 152, 0.24) 81.595%, rgba(255, 255, 255, 0.17) 97.435%)',
+                      }}
+                    />
+                    <p
+                      className="absolute left-[76px] top-[124px] m-0 h-[47px] w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-white"
+                      style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+                      data-node-id="201:458"
+                    >
+                      A natural garden where diverse flower festivals take place throughout the year. In winter, visitors can see camellia flowers, one of Jeju&apos;s most iconic blooms. The site also conducts plant resource research.
+                    </p>
+                  </div>
+                  <div
+                    className="absolute left-0 top-0 w-[267px] text-[24px] not-italic leading-[1.28] tracking-[0.48px] text-[#8b0e0e]"
+                    style={{ fontFamily: '"Pretendard", sans-serif', fontWeight: 600, letterSpacing: '0.48px' }}
+                    data-node-id="201:342"
+                  >
+                    <p className="m-0 block">Sanghyowon Botanical</p>
+                    <p className="m-0 block">Garden</p>
+                    <p className="m-0 block">상효원 수목원</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="absolute left-[591px] top-[257px] h-[230px] w-[588px]">
+              <div
+                className={`absolute left-0 top-0 h-[230px] w-[588px] transition-all duration-300 ease-out ${
+                  showBaekrokDamInfo
+                    ? 'translate-y-0 opacity-100 blur-0'
+                    : 'pointer-events-none translate-y-2 opacity-0 blur-[2px]'
+                }`}
+                data-node-id="210:1160"
+              >
+                <div className="absolute left-[26px] top-0 contents" data-node-id="201:453">
+                  <div
+                    className="absolute left-[26px] top-0 h-[119px] w-[562px] rounded-[96px] border border-solid border-white shadow-[0px_4px_16.5px_0px_rgba(0,0,0,0.1)]"
+                    data-node-id="201:454"
+                    style={{
+                      backgroundImage:
+                        'linear-gradient(99.9799deg, rgba(255, 255, 255, 0.17) 0.52999%, rgba(125, 153, 152, 0.24) 17.302%, rgba(125, 153, 152, 0.24) 81.595%, rgba(255, 255, 255, 0.17) 97.435%)',
+                    }}
+                  />
+                  <p
+                    className="absolute left-[74px] top-[39px] m-0 h-[47px] w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-white"
+                    style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+                    data-node-id="201:455"
+                  >
+                    Located near Jeju Airport, this is a space where visitors can purchase tangerines along with Jeju&apos;s local specialties.
+                  </p>
+                </div>
+                <div
+                  className="absolute left-0 top-[147px] w-[267px] text-[24px] not-italic leading-[1.28] tracking-[0.48px] text-[#8b0e0e]"
+                  style={{ fontFamily: '"Pretendard", sans-serif', fontWeight: 600, letterSpacing: '0.48px' }}
+                  data-node-id="201:343"
+                >
+                  <p className="m-0 block">Baekrok-dam Farm</p>
+                  <p className="m-0 block">백록담 감귤농장</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div
@@ -655,6 +1297,105 @@ function App() {
               <img alt="" className="absolute left-0 top-[-34.63%] h-[164.08%] w-[143.48%] max-w-none" src={imgImage91} />
             </div>
           </div>
+        </div>
+        <div
+          className="absolute left-[calc(5%+8px)] top-[6621px] flex w-[669px] flex-col items-start leading-[1.053] text-white"
+          data-node-id="207:948"
+        >
+          <p
+            className="m-0 h-[34px] w-full shrink-0 text-[24px] not-italic tracking-[2.88px]"
+            style={{ ...neueHaasMedium, letterSpacing: '2.88px' }}
+            data-node-id="207:949"
+          >
+            Frequently Asked Questions
+          </p>
+          <p
+            className="m-0 w-full shrink-0 text-[14px] not-italic tracking-[0.28px]"
+            style={{ ...neueHaasRoman, letterSpacing: '0.28px' }}
+            data-node-id="207:950"
+          >
+            Quick answers for planning your visit.
+          </p>
+        </div>
+        <div className="absolute left-[calc(10%-13px)] top-[6799px] h-[119px] w-[1236px]" data-node-id="207:969">
+          <div
+            className="absolute left-0 top-0 h-[119px] w-[1184px] rounded-[20px] border border-solid border-white bg-gradient-to-b from-[rgba(255,255,255,0.25)] to-[202.94%] to-[rgba(156,57,12,0.25)]"
+            data-node-id="207:970"
+          />
+          <p
+            className="absolute left-[45px] top-[25px] m-0 h-[35px] w-[252px] text-[20px] not-italic leading-[1.1] tracking-[0.4px] text-white"
+            style={{ ...neueHaasBold, letterSpacing: '0.4px' }}
+            data-node-id="207:971"
+          >
+            Do I need tickets?
+          </p>
+          <p
+            className="absolute left-[60px] top-[67px] m-0 h-[35px] w-[1113px] text-[16px] not-italic leading-[1.1] tracking-[0.32px] text-white"
+            style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+            data-node-id="207:972"
+          >
+            Entry is permitted only with a valid ticket. Tickets can be purchased online, and on-site purchases include tax. Early bird tickets are available at a 20% discount.
+          </p>
+        </div>
+        <div className="absolute left-[calc(10%-13px)] top-[6943px] h-[119px] w-[1236px]" data-node-id="207:1013">
+          <div
+            className="absolute left-0 top-0 h-[119px] w-[1184px] rounded-[20px] border border-solid border-white bg-gradient-to-b from-[rgba(255,255,255,0.25)] to-[202.94%] to-[rgba(156,57,12,0.25)]"
+            data-node-id="207:1014"
+          />
+          <p
+            className="absolute left-[45px] top-[25px] m-0 h-[35px] w-[252px] text-[20px] not-italic leading-[1.1] tracking-[0.4px] text-white"
+            style={{ ...neueHaasBold, letterSpacing: '0.4px' }}
+            data-node-id="207:1015"
+          >
+            Is it family-friendly?
+          </p>
+          <p
+            className="absolute left-[60px] top-[67px] m-0 h-[35px] w-[1113px] text-[16px] not-italic leading-[1.1] tracking-[0.32px] text-white"
+            style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+            data-node-id="207:1016"
+          >
+            Yes. The festival is designed for families, friends, and first-time visitors.
+          </p>
+        </div>
+        <div className="absolute left-[calc(10%-13px)] top-[7087px] h-[119px] w-[1236px]" data-node-id="207:1017">
+          <div
+            className="absolute left-0 top-0 h-[119px] w-[1184px] rounded-[20px] border border-solid border-white bg-gradient-to-b from-[rgba(255,255,255,0.25)] to-[202.94%] to-[rgba(156,57,12,0.25)]"
+            data-node-id="207:1018"
+          />
+          <p
+            className="absolute left-[45px] top-[25px] m-0 h-[35px] w-[252px] text-[20px] not-italic leading-[1.1] tracking-[0.4px] text-white"
+            style={{ ...neueHaasBold, letterSpacing: '0.4px' }}
+            data-node-id="207:1019"
+          >
+            Are pets allowed?
+          </p>
+          <p
+            className="absolute left-[60px] top-[67px] m-0 h-[35px] w-[1113px] text-[16px] not-italic leading-[1.1] tracking-[0.32px] text-white"
+            style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+            data-node-id="207:1020"
+          >
+            Yes. Please keep your pet on a leash at all times and clean up after them. We ask all visitors to ensure their pets do not disturb other guests.
+          </p>
+        </div>
+        <div className="absolute left-[calc(10%-13px)] top-[7231px] h-[119px] w-[1236px]" data-node-id="207:1021">
+          <div
+            className="absolute left-0 top-0 h-[119px] w-[1184px] rounded-[20px] border border-solid border-white bg-gradient-to-b from-[rgba(255,255,255,0.25)] to-[202.94%] to-[rgba(156,57,12,0.25)]"
+            data-node-id="207:1022"
+          />
+          <p
+            className="absolute left-[45px] top-[25px] m-0 h-[35px] w-[343px] text-[20px] not-italic leading-[1.1] tracking-[0.4px] text-white"
+            style={{ ...neueHaasBold, letterSpacing: '0.4px' }}
+            data-node-id="207:1023"
+          >
+            Is the venue wheelchair accessible?
+          </p>
+          <p
+            className="absolute left-[60px] top-[67px] m-0 h-[35px] w-[1113px] text-[16px] not-italic leading-[1.1] tracking-[0.32px] text-white"
+            style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+            data-node-id="207:1024"
+          >
+            Yes. the venue is wheelchair accessible. Most areas of the festival grounds are accessible, and staff will be available to assist visitors if needed.
+          </p>
         </div>
           {/* 이하 섹션도 Figma 코드 그대로 이어지며, 레이아웃/폰트/색상/텍스트는 전부 동일하게 유지됩니다. */}
         </div>
