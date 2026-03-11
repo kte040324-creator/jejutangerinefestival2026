@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import ClickSpark from './components/ClickSpark'
+import ScrollBubbles from './components/ScrollBubbles'
+import SplitText from './components/SplitText'
 
 const imgImage69 = 'http://localhost:3845/assets/9e68c60b7bf7096e6502807c910f71435c656295.png'
 const imgImage85 = 'http://localhost:3845/assets/0ab8cf7d93dfacba70b8243c0ffdb8f6976b79bb.png'
@@ -52,7 +54,9 @@ const neueHaasBold = {
 
 function App() {
   const [scale, setScale] = useState(1)
-  const [heroFloatExitProgress, setHeroFloatExitProgress] = useState(0)
+  const heroExitRefs = useRef<(HTMLDivElement | null)[]>([])
+  const scaleRef = useRef(scale)
+  scaleRef.current = scale
   const [showAnalogGyulbatInfo, setShowAnalogGyulbatInfo] = useState(false)
   const [showJejuInACitrusInfo, setShowJejuInACitrusInfo] = useState(false)
   const [showCafeGyulkkotDarakInfo, setShowCafeGyulkkotDarakInfo] = useState(false)
@@ -81,17 +85,40 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const updateHeroFloatExitProgress = () => {
-      if (typeof window === 'undefined') return
-      const designScrollY = window.scrollY / (scale || 1)
-      const nextProgress = Math.min(Math.max(designScrollY / 760, 0), 1)
-      setHeroFloatExitProgress(nextProgress)
+    let rafId = 0
+    const applyExit = (el: HTMLDivElement | null, exitX: number, exitY: number, rotation: number, p: number) => {
+      if (!el) return
+      const e = 1 - Math.pow(1 - p, 3)
+      el.style.transform = `translate3d(${e * exitX}px, ${e * exitY}px, 0) rotate(${rotation * e}deg) scale(${1 - e * 0.06})`
+      el.style.opacity = String(1 - e * 0.82)
     }
 
-    updateHeroFloatExitProgress()
-    window.addEventListener('scroll', updateHeroFloatExitProgress, { passive: true })
-    return () => window.removeEventListener('scroll', updateHeroFloatExitProgress)
-  }, [scale])
+    const onScroll = () => {
+      if (rafId) return
+      rafId = requestAnimationFrame(() => {
+        const p = Math.min(1, Math.max(0, window.scrollY / (scaleRef.current || 1) / 760))
+        applyExit(heroExitRefs.current[0], -920, -120, -22, p)
+        applyExit(heroExitRefs.current[1], 1080, 60, 24, p)
+        applyExit(heroExitRefs.current[2], 820, -100, 28, p)
+        applyExit(heroExitRefs.current[3], -820, 70, -28, p)
+        rafId = 0
+      })
+    }
+
+    const init = () => {
+      const p = Math.min(1, Math.max(0, window.scrollY / (scaleRef.current || 1) / 760))
+      applyExit(heroExitRefs.current[0], -920, -120, -22, p)
+      applyExit(heroExitRefs.current[1], 1080, 60, 24, p)
+      applyExit(heroExitRefs.current[2], 820, -100, 28, p)
+      applyExit(heroExitRefs.current[3], -820, 70, -28, p)
+    }
+    init()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
+  }, [])
 
   useEffect(() => {
     return () => {
@@ -158,25 +185,9 @@ function App() {
     scrollAnimationFrameRef.current = window.requestAnimationFrame(animateScroll)
   }
 
-  const getHeroFloatExitStyle = (
-    baseX: number,
-    baseY: number,
-    exitX: number,
-    exitY: number,
-    rotation = 0,
-    baseScale = 1,
-  ) => {
-    const easedExit = 1 - Math.pow(1 - heroFloatExitProgress, 3)
-
-    return {
-      transform: `translate3d(${baseX + easedExit * exitX}px, ${baseY + easedExit * exitY}px, 0) rotate(${rotation * easedExit}deg) scale(${baseScale * (1 - easedExit * 0.06)})`,
-      opacity: 1 - easedExit * 0.82,
-      willChange: 'transform, opacity',
-    }
-  }
-
   return (
     <ClickSpark sparkColor="#fff4df" sparkCount={10} sparkRadius={22} sparkSize={14} duration={500} extraScale={1.15}>
+      <ScrollBubbles bubbleColor="rgba(255,244,223,0.5)" spawnPerScroll={5}>
       <div className="min-h-screen bg-black text-white">
         <div className="relative flex w-full justify-center overflow-x-hidden">
           <div
@@ -344,7 +355,8 @@ function App() {
           </p>
         </div>
         <div className="absolute left-[2.31%] right-[74.03%] top-[304.53px] flex aspect-[340.7181986097812/327.96715335845147] items-center justify-center">
-          <div className="float-orbit-1" style={getHeroFloatExitStyle(0, 0, -760, -80, -18)}>
+          <div ref={(el) => { heroExitRefs.current[0] = el }} style={{ willChange: 'transform, opacity' }}>
+            <div className="float-orbit-1">
             <div className="h-[210.986px] w-[267.894px] flex-none rotate-[-35.88deg]">
               <div className="relative size-full" data-name="image 69" data-node-id="177:1706">
                 <img
@@ -354,6 +366,7 @@ function App() {
                 />
               </div>
             </div>
+            </div>
           </div>
         </div>
         <div
@@ -361,15 +374,18 @@ function App() {
           data-name="image 85"
           data-node-id="177:1705"
         >
-          <div className="float-orbit-2 relative size-full" style={getHeroFloatExitStyle(0, 0, 860, 30, 18)}>
+          <div ref={(el) => { heroExitRefs.current[1] = el }} className="relative size-full" style={{ willChange: 'transform, opacity' }}>
+            <div className="float-orbit-2 relative size-full">
             <img alt="" className="pointer-events-none absolute inset-0 size-full max-w-none object-cover" src={imgImage85} />
+            </div>
           </div>
         </div>
         <div
           className="-translate-x-1/2 -translate-y-1/2 absolute left-[calc(80%+1.18px)] top-[calc(50%-3435.93px)] flex h-[167.134px] w-[242.355px] items-center justify-center"
           style={{ ['--transform-inner-width' as string]: '1200', ['--transform-inner-height' as string]: '19' }}
         >
-          <div className="float-orbit-3" style={getHeroFloatExitStyle(0, 0, 620, -70, 20)}>
+          <div ref={(el) => { heroExitRefs.current[2] = el }} style={{ willChange: 'transform, opacity' }}>
+            <div className="float-orbit-3">
             <div className="flex-none rotate-[-11.65deg]">
               <div className="relative h-[124.94px] w-[221.693px]" data-name="레이어 1" data-node-id="209:1133">
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -377,12 +393,14 @@ function App() {
                 </div>
               </div>
             </div>
+            </div>
           </div>
         </div>
         <div className="absolute inset-[12.28%_69.05%_83.84%_6.74%] contents" data-name="레이어 3" data-node-id="209:1134">
           <div className="absolute inset-[12.28%_69.05%_83.84%_6.74%] contents" data-name="l2RSFC.tif" data-node-id="209:1135">
             <div className="absolute inset-[12.28%_69.05%_83.84%_6.74%] flex items-center justify-center">
-              <div className="float-orbit-4" style={getHeroFloatExitStyle(0, 0, -620, -70, -20)}>
+              <div ref={(el) => { heroExitRefs.current[3] = el }} style={{ willChange: 'transform, opacity' }}>
+                <div className="float-orbit-4">
                 <div className="h-[234.218px] w-[304.08px] flex-none rotate-[-12.87deg]">
                   <div className="relative size-full" data-name="레이어 1" data-node-id="209:1136">
                     <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -390,24 +408,56 @@ function App() {
                     </div>
                   </div>
                 </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div
-          className="-translate-x-1/2 absolute left-1/2 top-[1487px] h-[125px] w-[856px] text-center text-[#8b0e0e]"
+          className="-translate-x-1/2 absolute left-1/2 top-[1487px] flex h-[200px] w-[856px] flex-col items-center justify-center gap-6 px-[80px] text-center"
           data-node-id="210:1141"
         >
-          <p
-            className="-translate-x-1/2 absolute left-1/2 top-0 m-0 h-[68px] w-[548px] text-[42px] font-['Neue_Haas_Grotesk_Display_Pro:65_Medium',sans-serif] not-italic leading-[1.053]"
-            style={{ ...neueHaasMedium, letterSpacing: '0.84px' }}
+          <div
+            className="m-0 flex shrink-0 items-center justify-center"
             data-node-id="197:282"
           >
-            What to look forward to
-          </p>
+            <SplitText
+              text="What to look forward to"
+              tag="p"
+              className="m-0 shrink-0"
+              style={{
+                color: '#8B0E0E',
+                textAlign: 'center',
+                fontFamily: '"Neue Haas Grotesk Display Pro", sans-serif',
+                fontSize: '128px',
+                fontStyle: 'normal',
+                fontWeight: 500,
+                lineHeight: '105.255%',
+                whiteSpace: 'nowrap',
+              }}
+              delay={50}
+              duration={1.25}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-100px"
+              textAlign="center"
+            />
+          </div>
           <p
-            className="-translate-x-1/2 absolute left-1/2 top-[78px] m-0 h-[47px] w-[856px] text-[24px] font-['Neue_Haas_Grotesk_Display_Pro:55_Roman',sans-serif] not-italic leading-[1.053]"
-            style={{ ...neueHaasRoman, letterSpacing: '0.48px' }}
+            className="m-0 h-[47px] w-full max-w-[696px] shrink-0"
+            style={{
+              color: '#8B0E0E',
+              textAlign: 'center',
+              fontFamily: '"Neue Haas Grotesk Display Pro", sans-serif',
+              fontSize: '24px',
+              fontStyle: 'normal',
+              fontWeight: 450,
+              lineHeight: '105.255%',
+              letterSpacing: '0.48px',
+            }}
             data-node-id="197:283"
           >
             A week-long promotion &amp; celebration of Jeju&apos;s iconic tangerines
@@ -433,114 +483,196 @@ function App() {
           </p>
         </div>
         <div
-          className="absolute left-[calc(5%+1px)] top-[1923px] h-[603px] w-[310px] overflow-hidden rounded-[20px] border border-solid border-white"
+          className="flip-card absolute left-[calc(5%+1px)] top-[1923px] h-[603px] w-[310px] cursor-pointer"
           data-node-id="197:293"
         >
-          <div
-            className="absolute left-[-1px] top-[-1px] h-[603px] w-[310px] rounded-[20px]"
-            data-name="스크린샷 2026-03-01 16.47.22 1"
-            data-node-id="207:1029"
-          >
-            <div className="absolute inset-0 overflow-hidden rounded-[20px] pointer-events-none">
-              <img alt="" className="absolute left-[-52.7%] top-0 h-full w-[297.99%] max-w-none" src={img202603011647223} />
+          <div className="flip-card-inner size-full">
+            {/* Front: 기존 카드 */}
+            <div className="flip-card-front border border-solid border-white">
+              <div
+                className="absolute left-[-1px] top-[-1px] h-[603px] w-[310px] rounded-[20px]"
+                data-name="스크린샷 2026-03-01 16.47.22 1"
+                data-node-id="207:1029"
+              >
+                <div className="absolute inset-0 overflow-hidden rounded-[20px] pointer-events-none">
+                  <img alt="" className="absolute left-[-52.7%] top-0 h-full w-[297.99%] max-w-none" src={img202603011647223} />
+                </div>
+              </div>
+              <div
+                className="absolute left-[-1px] top-[-1px] h-[603px] w-[310px] rounded-[20px] bg-gradient-to-b from-[47.264%] from-[rgba(255,255,255,0.25)] to-[86.982%] to-[rgba(156,57,12,0.25)]"
+                data-node-id="197:284"
+              />
+              <div
+                className="absolute left-[-1px] top-[-1px] h-[603px] w-[310px] bg-gradient-to-b from-[58.654%] from-[rgba(255,149,88,0.29)] to-[#702900] mix-blend-color"
+                data-node-id="207:1034"
+              />
+              <p
+                className="absolute left-[26px] top-[478px] m-0 h-[98px] w-[186px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
+                style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
+                data-node-id="197:291"
+              >
+                Tangerines Picking Experience
+              </p>
+            </div>
+            {/* Back: Figma node-id=243-3951 디자인 영역 */}
+            <div className="flip-card-back flex items-start border border-solid border-white bg-gradient-to-b from-[#702900] to-[#8B3A0E] p-6">
+              <p
+                className="m-0 text-left"
+                style={{
+                  width: '255px',
+                  height: '231px',
+                  color: '#FFF',
+                  ...neueHaasRoman,
+                  fontSize: '32px',
+                  fontStyle: 'normal',
+                  lineHeight: 'normal',
+                }}
+              >
+                Harvest fresh Jeju tangerines directly from the orchard and enjoy the seasonal picking experience
+              </p>
             </div>
           </div>
-          <div
-            className="absolute left-[-1px] top-[-1px] h-[603px] w-[310px] rounded-[20px] bg-gradient-to-b from-[47.264%] from-[rgba(255,255,255,0.25)] to-[86.982%] to-[rgba(156,57,12,0.25)]"
-            data-node-id="197:284"
-          />
-          <div
-            className="absolute left-[-1px] top-[-1px] h-[603px] w-[310px] bg-gradient-to-b from-[58.654%] from-[rgba(255,149,88,0.29)] to-[#702900] mix-blend-color"
-            data-node-id="207:1034"
-          />
-          <p
-            className="absolute left-[26px] top-[478px] m-0 h-[98px] w-[186px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
-            style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
-            data-node-id="197:291"
-          >
-            Tangerines Picking Experience
-          </p>
         </div>
         <div
-          className="absolute left-[calc(25%+41px)] top-[1923px] h-[603px] w-[310px] overflow-hidden rounded-[20px] border border-solid border-white"
+          className="flip-card absolute left-[calc(25%+41px)] top-[1923px] h-[603px] w-[310px] cursor-pointer"
           data-node-id="197:294"
         >
-          <div
-            className="absolute left-[-154px] top-[-2px] h-[604px] w-[597px]"
-            data-name="스크린샷 2026-03-01 16.47.22 1"
-            data-node-id="207:1036"
-          >
-            <img alt="" className="absolute inset-0 size-full max-w-none object-cover pointer-events-none" src={img202603011647221} />
-          </div>
-          <div
-            className="absolute left-[-1px] top-[-1px] h-[603px] w-[310px] bg-gradient-to-b from-[58.654%] from-[rgba(255,149,88,0.29)] to-[#702900] mix-blend-color"
-            data-node-id="207:1038"
-          />
-          <div
-            className="absolute left-[26px] top-[478px] h-[98px] w-[186px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
-            style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
-            data-node-id="197:297"
-          >
-            <p className="m-0">Tangerine</p>
-            <p className="m-0">Jam &amp; Juice</p>
-            <p className="m-0">Making</p>
-          </div>
-        </div>
-        <div
-          className="absolute left-[calc(50%+9px)] top-[1923px] h-[603px] w-[310px] overflow-hidden rounded-[20px] border border-solid border-white"
-          data-node-id="197:295"
-        >
-          <div
-            className="absolute left-[-105.32px] top-[-89.05px] flex h-[779px] w-[519px] items-center justify-center"
-            style={{ ['--transform-inner-width' as string]: '1200', ['--transform-inner-height' as string]: '19' }}
-          >
-            <div className="-rotate-90 flex-none">
-              <div className="relative h-[519px] w-[779px]" data-name="unsplash:ewtgKJw_0Jo" data-node-id="207:1049">
-                <img
-                  alt=""
-                  className="absolute inset-0 size-full max-w-none object-cover pointer-events-none"
-                  src={imgUnsplashEwtgKJw0Jo}
-                />
+          <div className="flip-card-inner size-full">
+            <div className="flip-card-front border border-solid border-white">
+              <div
+                className="absolute left-[-154px] top-[-2px] h-[604px] w-[597px]"
+                data-name="스크린샷 2026-03-01 16.47.22 1"
+                data-node-id="207:1036"
+              >
+                <img alt="" className="absolute inset-0 size-full max-w-none object-cover pointer-events-none" src={img202603011647221} />
+              </div>
+              <div
+                className="absolute left-[-1px] top-[-1px] h-[603px] w-[310px] bg-gradient-to-b from-[58.654%] from-[rgba(255,149,88,0.29)] to-[#702900] mix-blend-color"
+                data-node-id="207:1038"
+              />
+              <div
+                className="absolute left-[26px] top-[478px] h-[98px] w-[186px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
+                style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
+                data-node-id="197:297"
+              >
+                <p className="m-0">Tangerine</p>
+                <p className="m-0">Jam &amp; Juice</p>
+                <p className="m-0">Making</p>
               </div>
             </div>
-          </div>
-          <div
-            className="absolute left-[-1px] top-[-1px] h-[603px] w-[310px] bg-gradient-to-b from-[58.654%] from-[rgba(255,149,88,0.29)] to-[#702900] mix-blend-color"
-            data-node-id="207:1046"
-          />
-          <div
-            className="absolute left-[26px] top-[478px] h-[98px] w-[186px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
-            style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
-            data-node-id="197:299"
-          >
-            <p className="m-0">Fresh Local</p>
-            <p className="m-0">Farmers&rsquo;</p>
-            <p className="m-0">Market</p>
+            <div className="flip-card-back flex items-start border border-solid border-white bg-gradient-to-b from-[#702900] to-[#8B3A0E] p-6">
+              <p
+                className="m-0 text-left"
+                style={{
+                  width: '255px',
+                  height: '231px',
+                  color: '#FFF',
+                  ...neueHaasRoman,
+                  fontSize: '32px',
+                  fontStyle: 'normal',
+                  lineHeight: 'normal',
+                }}
+              >
+                Create your own tangerine jam and fresh juice using locally harvested citrus
+              </p>
+            </div>
           </div>
         </div>
         <div
-          className="absolute left-[calc(70%+49px)] top-[1923px] h-[603px] w-[310px] overflow-hidden rounded-[20px] border border-solid border-white"
+          className="flip-card absolute left-[calc(50%+9px)] top-[1923px] h-[603px] w-[310px] cursor-pointer"
+          data-node-id="197:295"
+        >
+          <div className="flip-card-inner size-full">
+            <div className="flip-card-front border border-solid border-white">
+              <div
+                className="absolute left-[-105.32px] top-[-89.05px] flex h-[779px] w-[519px] items-center justify-center"
+                style={{ ['--transform-inner-width' as string]: '1200', ['--transform-inner-height' as string]: '19' }}
+              >
+                <div className="-rotate-90 flex-none">
+                  <div className="relative h-[519px] w-[779px]" data-name="unsplash:ewtgKJw_0Jo" data-node-id="207:1049">
+                    <img
+                      alt=""
+                      className="absolute inset-0 size-full max-w-none object-cover pointer-events-none"
+                      src={imgUnsplashEwtgKJw0Jo}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="absolute left-[-1px] top-[-1px] h-[603px] w-[310px] bg-gradient-to-b from-[58.654%] from-[rgba(255,149,88,0.29)] to-[#702900] mix-blend-color"
+                data-node-id="207:1046"
+              />
+              <div
+                className="absolute left-[26px] top-[478px] h-[98px] w-[186px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
+                style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
+                data-node-id="197:299"
+              >
+                <p className="m-0">Fresh Local</p>
+                <p className="m-0">Farmers&rsquo;</p>
+                <p className="m-0">Market</p>
+              </div>
+            </div>
+            <div className="flip-card-back flex items-start border border-solid border-white bg-gradient-to-b from-[#702900] to-[#8B3A0E] p-6">
+              <p
+                className="m-0 text-left"
+                style={{
+                  width: '255px',
+                  height: '231px',
+                  color: '#FFF',
+                  ...neueHaasRoman,
+                  fontSize: '32px',
+                  fontStyle: 'normal',
+                  lineHeight: 'normal',
+                }}
+              >
+                Explore a market featuring fresh produce and specialties from Jeju&apos;s local farmers
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          className="flip-card absolute left-[calc(70%+49px)] top-[1923px] h-[603px] w-[310px] cursor-pointer"
           data-node-id="197:296"
         >
-          <div
-            className="absolute left-[-87px] top-[-2px] h-[604px] w-[597px]"
-            data-name="스크린샷 2026-03-01 16.47.22 1"
-            data-node-id="207:1051"
-          >
-            <img alt="" className="absolute inset-0 size-full max-w-none object-cover pointer-events-none" src={img202603011647222} />
-          </div>
-          <div
-            className="absolute left-[-1px] top-[-1px] h-[603px] w-[310px] rounded-[20px] border-[1.5px] border-solid border-white bg-gradient-to-b from-[47.264%] from-[rgba(255,255,255,0.25)] to-[86.982%] to-[rgba(156,57,12,0.25)]"
-            data-node-id="197:290"
-          />
-          <div
-            className="absolute left-[26px] top-[478px] h-[98px] w-[210px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
-            style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
-            data-node-id="197:301"
-          >
-            <p className="m-0">Live Local</p>
-            <p className="m-0">Music&amp;</p>
-            <p className="m-0">Performances</p>
+          <div className="flip-card-inner size-full">
+            <div className="flip-card-front border border-solid border-white">
+              <div
+                className="absolute left-[-87px] top-[-2px] h-[604px] w-[597px]"
+                data-name="스크린샷 2026-03-01 16.47.22 1"
+                data-node-id="207:1051"
+              >
+                <img alt="" className="absolute inset-0 size-full max-w-none object-cover pointer-events-none" src={img202603011647222} />
+              </div>
+              <div
+                className="absolute left-[-1px] top-[-1px] h-[603px] w-[310px] rounded-[20px] border-[1.5px] border-solid border-white bg-gradient-to-b from-[47.264%] from-[rgba(255,255,255,0.25)] to-[86.982%] to-[rgba(156,57,12,0.25)]"
+                data-node-id="197:290"
+              />
+              <div
+                className="absolute left-[26px] top-[478px] h-[98px] w-[210px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
+                style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
+                data-node-id="197:301"
+              >
+                <p className="m-0">Live Local</p>
+                <p className="m-0">Music&amp;</p>
+                <p className="m-0">Performances</p>
+              </div>
+            </div>
+            <div className="flip-card-back flex items-start border border-solid border-white bg-gradient-to-b from-[#702900] to-[#8B3A0E] p-6">
+              <p
+                className="m-0 text-left"
+                style={{
+                  width: '255px',
+                  height: '231px',
+                  color: '#FFF',
+                  ...neueHaasRoman,
+                  fontSize: '32px',
+                  fontStyle: 'normal',
+                  lineHeight: 'normal',
+                }}
+              >
+                Enjoy live music and performances by local artists throughout the festival
+              </p>
+            </div>
           </div>
         </div>
         <div
@@ -1322,83 +1454,139 @@ function App() {
           </p>
         </div>
         <div
-          className="-translate-x-1/2 absolute left-[calc(27.5%-9px)] top-[5658px] h-[577px] w-[310px] overflow-hidden rounded-[20px] border border-solid border-white"
+          className="flip-card -translate-x-1/2 absolute left-[calc(27.5%-9px)] top-[5658px] h-[577px] w-[310px] cursor-pointer"
           data-node-id="205:870"
         >
-          <div
-            className="absolute left-[-249px] top-[-1px] h-[577px] w-[1018px]"
-            data-name="407820_412869_1948 1"
-            data-node-id="207:1054"
-          >
-            <img
-              alt=""
-              className="pointer-events-none absolute inset-0 size-full max-w-none object-cover"
-              src={img40782041286919481}
-            />
+          <div className="flip-card-inner size-full">
+            <div className="flip-card-front overflow-clip border border-solid border-white rounded-[20px]">
+              <div
+                className="absolute left-[-249px] top-[-1px] h-[577px] w-[1018px]"
+                data-name="407820_412869_1948 1"
+                data-node-id="207:1054"
+              >
+                <img
+                  alt=""
+                  className="pointer-events-none absolute inset-0 size-full max-w-none object-cover"
+                  src={img40782041286919481}
+                />
+              </div>
+              <div
+                className="absolute left-[-1px] top-[-1px] h-[322px] w-[310px] rounded-[20px] bg-gradient-to-b from-[9.161%] from-white to-[63.665%] to-[rgba(156,57,12,0)]"
+                data-node-id="205:871"
+              />
+              <div className="absolute left-[99px] top-[17px] h-[36px] w-[109px]" data-name="image 86" data-node-id="207:1057">
+                <img alt="" className="pointer-events-none absolute inset-0 size-full max-w-none object-cover" src={imgImage86} />
+              </div>
+              <p
+                className="absolute left-[26px] top-[478px] m-0 h-[98px] w-[186px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
+                style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
+                data-node-id="205:872"
+              >
+                NONGHYUP
+              </p>
+            </div>
+            <div className="flip-card-back flex items-start border border-solid border-white bg-gradient-to-b from-[#702900] to-[#8B3A0E] p-6">
+              <p
+                className="m-0 text-left"
+                style={{
+                  width: '255px',
+                  height: '231px',
+                  color: '#FFF',
+                  ...neueHaasRoman,
+                  fontSize: '32px',
+                  fontStyle: 'normal',
+                  lineHeight: 'normal',
+                }}
+              >
+                Supporting local agriculture and promoting Jeju&apos;s tangerine industry
+              </p>
+            </div>
           </div>
-          <div
-            className="absolute left-[-1px] top-[-1px] h-[322px] w-[310px] rounded-[20px] bg-gradient-to-b from-[9.161%] from-white to-[63.665%] to-[rgba(156,57,12,0)]"
-            data-node-id="205:871"
-          />
-          <p
-            className="absolute left-[26px] top-[478px] m-0 h-[98px] w-[186px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
-            style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
-            data-node-id="205:872"
-          >
-            NONGHYUP
-          </p>
         </div>
         <div
-          className="absolute left-[calc(20%+44px)] top-[5676px] h-[36px] w-[109px]"
-          data-name="image 86"
-          data-node-id="207:1057"
-        >
-          <img alt="" className="absolute inset-0 size-full max-w-none object-cover pointer-events-none" src={imgImage86} />
-        </div>
-        <div
-          className="-translate-x-1/2 absolute left-1/2 top-[5658px] h-[577px] w-[310px] overflow-hidden rounded-[20px] border border-solid border-white"
+          className="flip-card -translate-x-1/2 absolute left-1/2 top-[5658px] h-[577px] w-[310px] cursor-pointer"
           data-node-id="205:862"
         >
-          <div className="absolute left-[-370px] top-[-1px] h-[577px] w-[932px]" data-name="image 87" data-node-id="207:1060">
-            <img alt="" className="pointer-events-none absolute inset-0 size-full max-w-none object-cover" src={imgImage87} />
-          </div>
-          <div
-            className="absolute left-[-1px] top-[-1px] h-[577px] w-[310px] rounded-[20px] bg-gradient-to-b from-[9.161%] from-white to-[63.665%] to-[rgba(156,57,12,0)]"
-            data-node-id="207:1062"
-          />
-          <p
-            className="absolute left-[26px] top-[478px] m-0 h-[98px] w-[186px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
-            style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
-            data-node-id="205:864"
-          >
-            OSULLOC
-          </p>
-          <div className="absolute left-[89px] top-[-1px] size-[128px]" data-name="image 88" data-node-id="207:1065">
-            <img alt="" className="pointer-events-none absolute inset-0 size-full max-w-none object-cover" src={imgImage88} />
+          <div className="flip-card-inner size-full">
+            <div className="flip-card-front border border-solid border-white">
+              <div className="absolute left-[-370px] top-[-1px] h-[577px] w-[932px]" data-name="image 87" data-node-id="207:1060">
+                <img alt="" className="pointer-events-none absolute inset-0 size-full max-w-none object-cover" src={imgImage87} />
+              </div>
+              <div
+                className="absolute left-[-1px] top-[-1px] h-[577px] w-[310px] rounded-[20px] bg-gradient-to-b from-[9.161%] from-white to-[63.665%] to-[rgba(156,57,12,0)]"
+                data-node-id="207:1062"
+              />
+              <p
+                className="absolute left-[26px] top-[478px] m-0 h-[98px] w-[186px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
+                style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
+                data-node-id="205:864"
+              >
+                OSULLOC
+              </p>
+              <div className="absolute left-[89px] top-[-1px] size-[128px]" data-name="image 88" data-node-id="207:1065">
+                <img alt="" className="pointer-events-none absolute inset-0 size-full max-w-none object-cover" src={imgImage88} />
+              </div>
+            </div>
+            <div className="flip-card-back flex items-start border border-solid border-white bg-gradient-to-b from-[#702900] to-[#8B3A0E] p-6">
+              <p
+                className="m-0 text-left"
+                style={{
+                  width: '255px',
+                  height: '231px',
+                  color: '#FFF',
+                  ...neueHaasRoman,
+                  fontSize: '32px',
+                  fontStyle: 'normal',
+                  lineHeight: 'normal',
+                }}
+              >
+                Celebrating Jeju&apos;s natural flavors through premium tea and local ingredients
+              </p>
+            </div>
           </div>
         </div>
         <div
-          className="-translate-x-1/2 absolute left-[calc(72.5%+9px)] top-[5658px] h-[577px] w-[310px] overflow-hidden rounded-[20px] border border-solid border-white"
+          className="flip-card -translate-x-1/2 absolute left-[calc(72.5%+9px)] top-[5658px] h-[577px] w-[310px] cursor-pointer"
           data-node-id="205:873"
         >
-          <div className="absolute left-[-293px] top-[-1px] h-[577px] w-[986px]" data-name="image 89" data-node-id="207:1072">
-            <img alt="" className="pointer-events-none absolute inset-0 size-full max-w-none object-cover" src={imgImage89} />
-          </div>
-          <div
-            className="absolute left-[26px] top-[478px] h-[98px] w-[243px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
-            style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
-            data-node-id="205:875"
-          >
-            <p className="m-0">JEJU TOURISM</p>
-            <p className="m-0">ORGANIZATION</p>
-          </div>
-          <div
-            className="absolute left-[-1px] top-[-1px] h-[577px] w-[310px] rounded-[20px] bg-gradient-to-b from-[9.161%] from-white to-[63.665%] to-[rgba(156,57,12,0)]"
-            data-node-id="207:1074"
-          />
-          <div className="absolute left-[83px] top-[8px] h-[51px] w-[141px]" data-name="image 91" data-node-id="207:1083">
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              <img alt="" className="absolute left-0 top-[-34.63%] h-[164.08%] w-[143.48%] max-w-none" src={imgImage91} />
+          <div className="flip-card-inner size-full">
+            <div className="flip-card-front border border-solid border-white">
+              <div className="absolute left-[-293px] top-[-1px] h-[577px] w-[986px]" data-name="image 89" data-node-id="207:1072">
+                <img alt="" className="pointer-events-none absolute inset-0 size-full max-w-none object-cover" src={imgImage89} />
+              </div>
+              <div
+                className="absolute left-[26px] top-[478px] h-[98px] w-[243px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
+                style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
+                data-node-id="205:875"
+              >
+                <p className="m-0">JEJU TOURISM</p>
+                <p className="m-0">ORGANIZATION</p>
+              </div>
+              <div
+                className="absolute left-[-1px] top-[-1px] h-[577px] w-[310px] rounded-[20px] bg-gradient-to-b from-[9.161%] from-white to-[63.665%] to-[rgba(156,57,12,0)]"
+                data-node-id="207:1074"
+              />
+              <div className="absolute left-[83px] top-[8px] h-[51px] w-[141px]" data-name="image 91" data-node-id="207:1083">
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  <img alt="" className="absolute left-0 top-[-34.63%] h-[164.08%] w-[143.48%] max-w-none" src={imgImage91} />
+                </div>
+              </div>
+            </div>
+            <div className="flip-card-back flex items-start border border-solid border-white bg-gradient-to-b from-[#702900] to-[#8B3A0E] p-6">
+              <p
+                className="m-0 text-left"
+                style={{
+                  width: '255px',
+                  height: '231px',
+                  color: '#FFF',
+                  ...neueHaasRoman,
+                  fontSize: '32px',
+                  fontStyle: 'normal',
+                  lineHeight: 'normal',
+                }}
+              >
+                Promoting Jeju&apos;s culture, nature, and tourism experiences to visitors worldwide
+              </p>
             </div>
           </div>
         </div>
@@ -1505,6 +1693,7 @@ function App() {
           </div>
         </div>
       </div>
+      </ScrollBubbles>
     </ClickSpark>
   )
 }
