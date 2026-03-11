@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import ClickSpark from './components/ClickSpark'
 
 const imgImage69 = 'http://localhost:3845/assets/9e68c60b7bf7096e6502807c910f71435c656295.png'
 const imgImage85 = 'http://localhost:3845/assets/0ab8cf7d93dfacba70b8243c0ffdb8f6976b79bb.png'
@@ -28,6 +29,10 @@ const imgEllipse9 = 'http://localhost:3845/assets/f9738883787ed130262fcfab8828ff
 
 const DESIGN_WIDTH = 1440
 const DESIGN_HEIGHT = 7625
+const PROGRAMS_TOP = 1818
+const LOCATION_TOP = 2912
+const VENDORS_TOP = 3982
+const FAQ_TOP = 6621
 const neueHaasRoman = {
   fontFamily: '"Neue Haas Grotesk Display Pro", "Pretendard", sans-serif',
   fontWeight: 400,
@@ -47,6 +52,7 @@ const neueHaasBold = {
 
 function App() {
   const [scale, setScale] = useState(1)
+  const [heroFloatExitProgress, setHeroFloatExitProgress] = useState(0)
   const [showAnalogGyulbatInfo, setShowAnalogGyulbatInfo] = useState(false)
   const [showJejuInACitrusInfo, setShowJejuInACitrusInfo] = useState(false)
   const [showCafeGyulkkotDarakInfo, setShowCafeGyulkkotDarakInfo] = useState(false)
@@ -59,6 +65,7 @@ function App() {
   const dolbitnaArtFarmHoverTimeoutRef = useRef<number | null>(null)
   const sanghyowonHoverTimeoutRef = useRef<number | null>(null)
   const baekrokDamHoverTimeoutRef = useRef<number | null>(null)
+  const scrollAnimationFrameRef = useRef<number | null>(null)
 
   useEffect(() => {
     const updateScale = () => {
@@ -72,6 +79,19 @@ function App() {
     window.addEventListener('resize', updateScale)
     return () => window.removeEventListener('resize', updateScale)
   }, [])
+
+  useEffect(() => {
+    const updateHeroFloatExitProgress = () => {
+      if (typeof window === 'undefined') return
+      const designScrollY = window.scrollY / (scale || 1)
+      const nextProgress = Math.min(Math.max(designScrollY / 760, 0), 1)
+      setHeroFloatExitProgress(nextProgress)
+    }
+
+    updateHeroFloatExitProgress()
+    window.addEventListener('scroll', updateHeroFloatExitProgress, { passive: true })
+    return () => window.removeEventListener('scroll', updateHeroFloatExitProgress)
+  }, [scale])
 
   useEffect(() => {
     return () => {
@@ -93,23 +113,83 @@ function App() {
       if (baekrokDamHoverTimeoutRef.current !== null) {
         window.clearTimeout(baekrokDamHoverTimeoutRef.current)
       }
+      if (scrollAnimationFrameRef.current !== null) {
+        window.cancelAnimationFrame(scrollAnimationFrameRef.current)
+      }
     }
   }, [])
 
+  const scrollToSection = (top: number) => {
+    if (typeof window === 'undefined') return
+    const targetTop = Math.max(0, top * scale)
+    const startTop = window.scrollY
+    const distance = targetTop - startTop
+
+    if (Math.abs(distance) < 1) return
+
+    if (scrollAnimationFrameRef.current !== null) {
+      window.cancelAnimationFrame(scrollAnimationFrameRef.current)
+      scrollAnimationFrameRef.current = null
+    }
+
+    const duration = Math.min(1400, Math.max(700, Math.abs(distance) * 0.35))
+    const startTime = performance.now()
+
+    const easeOutQuint = (t: number) => 1 - Math.pow(1 - t, 5)
+
+    const animateScroll = (now: number) => {
+      const elapsed = now - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      const eased = easeOutQuint(progress)
+
+      window.scrollTo({
+        top: startTop + distance * eased,
+        behavior: 'auto',
+      })
+
+      if (progress < 1) {
+        scrollAnimationFrameRef.current = window.requestAnimationFrame(animateScroll)
+      } else {
+        window.scrollTo({ top: targetTop, behavior: 'auto' })
+        scrollAnimationFrameRef.current = null
+      }
+    }
+
+    scrollAnimationFrameRef.current = window.requestAnimationFrame(animateScroll)
+  }
+
+  const getHeroFloatExitStyle = (
+    baseX: number,
+    baseY: number,
+    exitX: number,
+    exitY: number,
+    rotation = 0,
+    baseScale = 1,
+  ) => {
+    const easedExit = 1 - Math.pow(1 - heroFloatExitProgress, 3)
+
+    return {
+      transform: `translate3d(${baseX + easedExit * exitX}px, ${baseY + easedExit * exitY}px, 0) rotate(${rotation * easedExit}deg) scale(${baseScale * (1 - easedExit * 0.06)})`,
+      opacity: 1 - easedExit * 0.82,
+      willChange: 'transform, opacity',
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="relative flex w-full justify-center overflow-x-hidden">
-        <div
-          className="relative"
-          style={{
-            width: DESIGN_WIDTH,
-            height: DESIGN_HEIGHT,
-            transform: `scale(${scale})`,
-            transformOrigin: 'top center',
-          }}
-          data-name="Wireframe - 1"
-          data-node-id="175:1550"
-        >
+    <ClickSpark sparkColor="#fff4df" sparkCount={10} sparkRadius={22} sparkSize={14} duration={500} extraScale={1.15}>
+      <div className="min-h-screen bg-black text-white">
+        <div className="relative flex w-full justify-center overflow-x-hidden">
+          <div
+            className="relative"
+            style={{
+              width: DESIGN_WIDTH,
+              height: DESIGN_HEIGHT,
+              transform: `scale(${scale})`,
+              transformOrigin: 'top center',
+            }}
+            data-name="Wireframe - 1"
+            data-node-id="175:1550"
+          >
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-white" />
         <div className="absolute left-1/2 top-[824px] h-[257px] w-[720px] bg-[#d9d9d9]" data-node-id="177:1686" />
         <div className="absolute left-[-2px] top-[944px] h-[137px] w-[720px] bg-[#d9d9d9]" data-node-id="177:1687" />
@@ -129,25 +209,40 @@ function App() {
           className="absolute left-px top-0 h-[89px] w-[1440px] bg-[rgba(255,255,255,0.15)]"
           data-node-id="175:1635"
         >
-          <div className="absolute left-[1045px] top-[34px] h-[21px] w-[77px]" data-node-id="175:1641">
+          <button
+            type="button"
+            className="absolute left-[1045px] top-[34px] h-[21px] w-[77px] cursor-pointer bg-transparent p-0 text-left"
+            onClick={() => scrollToSection(PROGRAMS_TOP)}
+            data-node-id="175:1641"
+          >
             <p
               className="absolute left-0 top-[calc(50%-10.5px)] h-[21px] w-[77px] text-[16px] font-['Neue_Haas_Grotesk_Display_Pro:55_Roman',sans-serif] not-italic leading-[1.053] tracking-[0.32px] text-white"
               style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
               data-node-id="175:1636"
             >
-              Highlights
+              Program
             </p>
-          </div>
-          <div className="absolute left-[1158px] top-[34px] h-[21px] w-[65px]" data-node-id="175:1642">
+          </button>
+          <button
+            type="button"
+            className="absolute left-[1158px] top-[34px] h-[21px] w-[65px] cursor-pointer bg-transparent p-0 text-left"
+            onClick={() => scrollToSection(VENDORS_TOP)}
+            data-node-id="175:1642"
+          >
             <p
               className="absolute left-0 top-[calc(50%-10.5px)] h-[21px] w-[65px] text-[16px] font-['Neue_Haas_Grotesk_Display_Pro:55_Roman',sans-serif] not-italic leading-[1.053] tracking-[0.32px] text-white"
               style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
               data-node-id="175:1638"
             >
-              Program
+              Vendors
             </p>
-          </div>
-          <div className="absolute left-[1259px] top-[34px] h-[21px] w-[64px]" data-node-id="175:1643">
+          </button>
+          <button
+            type="button"
+            className="absolute left-[1259px] top-[34px] h-[21px] w-[64px] cursor-pointer bg-transparent p-0 text-left"
+            onClick={() => scrollToSection(LOCATION_TOP)}
+            data-node-id="175:1643"
+          >
             <p
               className="absolute left-0 top-[calc(50%-10.5px)] h-[21px] w-[64px] text-[16px] font-['Neue_Haas_Grotesk_Display_Pro:55_Roman',sans-serif] not-italic leading-[1.053] tracking-[0.32px] text-white"
               style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
@@ -155,8 +250,13 @@ function App() {
             >
               Location
             </p>
-          </div>
-          <div className="absolute left-[1359px] top-[34px] h-[21px] w-[38px]" data-node-id="175:1644">
+          </button>
+          <button
+            type="button"
+            className="absolute left-[1359px] top-[34px] h-[21px] w-[38px] cursor-pointer bg-transparent p-0 text-left"
+            onClick={() => scrollToSection(FAQ_TOP)}
+            data-node-id="175:1644"
+          >
             <p
               className="absolute left-0 top-[calc(50%-10.5px)] h-[21px] w-[38px] text-[16px] font-['Neue_Haas_Grotesk_Display_Pro:55_Roman',sans-serif] not-italic leading-[1.053] tracking-[0.32px] text-white"
               style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
@@ -164,7 +264,7 @@ function App() {
             >
               FAQ
             </p>
-          </div>
+          </button>
           <div className="absolute left-[695.68px] top-[10px] h-[64px] w-[48.667px]" data-node-id="177:1805">
             <img alt="" className="absolute block size-full max-w-none" src={imgFrame10} />
           </div>
@@ -213,7 +313,7 @@ function App() {
             data-node-id="175:1681"
           >
             <div
-              className="absolute left-0 top-0 h-[50px] w-[163px] rounded-[100px] bg-[rgba(63,255,245,0.9)]"
+              className="absolute left-0 top-0 h-[50px] w-[163px] rounded-[100px] bg-[rgba(255,255,255,0.9)]"
               data-node-id="175:1673"
             />
           </div>
@@ -244,46 +344,50 @@ function App() {
           </p>
         </div>
         <div className="absolute left-[2.31%] right-[74.03%] top-[304.53px] flex aspect-[340.7181986097812/327.96715335845147] items-center justify-center">
-          <div className="h-[210.986px] w-[267.894px] flex-none rotate-[-35.88deg]">
-            <div className="relative size-full" data-name="image 69" data-node-id="177:1706">
-              <img
-                alt=""
-                className="pointer-events-none absolute inset-0 size-full max-w-none object-cover"
-                src={imgImage69}
-              />
+          <div className="float-orbit-1" style={getHeroFloatExitStyle(0, 0, -760, -80, -18)}>
+            <div className="h-[210.986px] w-[267.894px] flex-none rotate-[-35.88deg]">
+              <div className="relative size-full" data-name="image 69" data-node-id="177:1706">
+                <img
+                  alt=""
+                  className="pointer-events-none absolute inset-0 size-full max-w-none object-cover"
+                  src={imgImage69}
+                />
+              </div>
             </div>
           </div>
         </div>
         <div
-          className="absolute left-[69.03%] right-[2.99%] top-[720px] aspect-[1140/1120]"
+          className="absolute left-[71.67%] right-[8.47%] top-[722px] aspect-[1140/1120]"
           data-name="image 85"
           data-node-id="177:1705"
         >
-          <img
-            alt=""
-            className="pointer-events-none absolute inset-0 size-full max-w-none object-cover"
-            src={imgImage85}
-          />
+          <div className="float-orbit-2 relative size-full" style={getHeroFloatExitStyle(0, 0, 860, 30, 18)}>
+            <img alt="" className="pointer-events-none absolute inset-0 size-full max-w-none object-cover" src={imgImage85} />
+          </div>
         </div>
         <div
           className="-translate-x-1/2 -translate-y-1/2 absolute left-[calc(80%+1.18px)] top-[calc(50%-3435.93px)] flex h-[167.134px] w-[242.355px] items-center justify-center"
           style={{ ['--transform-inner-width' as string]: '1200', ['--transform-inner-height' as string]: '19' }}
         >
-          <div className="flex-none rotate-[-11.65deg]">
-            <div className="relative h-[124.94px] w-[221.693px]" data-name="레이어 1" data-node-id="209:1133">
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <img alt="" className="absolute left-0 top-0 size-full max-w-none" src={img1} />
+          <div className="float-orbit-3" style={getHeroFloatExitStyle(0, 0, 620, -70, 20)}>
+            <div className="flex-none rotate-[-11.65deg]">
+              <div className="relative h-[124.94px] w-[221.693px]" data-name="레이어 1" data-node-id="209:1133">
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  <img alt="" className="absolute left-0 top-0 size-full max-w-none" src={img1} />
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="absolute inset-[12.21%_70.65%_83.91%_5.14%] contents" data-name="레이어 3" data-node-id="209:1134">
-          <div className="absolute inset-[12.21%_70.65%_83.91%_5.14%] contents" data-name="l2RSFC.tif" data-node-id="209:1135">
-            <div className="absolute inset-[12.21%_70.65%_83.91%_5.14%] flex items-center justify-center">
-              <div className="h-[234.218px] w-[304.08px] flex-none rotate-[-12.87deg]">
-                <div className="relative size-full" data-name="레이어 1" data-node-id="209:1136">
-                  <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    <img alt="" className="absolute left-0 top-0 size-full max-w-none" src={img2} />
+        <div className="absolute inset-[12.28%_69.05%_83.84%_6.74%] contents" data-name="레이어 3" data-node-id="209:1134">
+          <div className="absolute inset-[12.28%_69.05%_83.84%_6.74%] contents" data-name="l2RSFC.tif" data-node-id="209:1135">
+            <div className="absolute inset-[12.28%_69.05%_83.84%_6.74%] flex items-center justify-center">
+              <div className="float-orbit-4" style={getHeroFloatExitStyle(0, 0, -620, -70, -20)}>
+                <div className="h-[234.218px] w-[304.08px] flex-none rotate-[-12.87deg]">
+                  <div className="relative size-full" data-name="레이어 1" data-node-id="209:1136">
+                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                      <img alt="" className="absolute left-0 top-0 size-full max-w-none" src={img2} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1307,7 +1411,7 @@ function App() {
             style={{ ...neueHaasMedium, letterSpacing: '2.88px' }}
             data-node-id="207:949"
           >
-            Frequently Asked Questions
+            FREQUENTLY ASKED QUESTIONS
           </p>
           <p
             className="m-0 w-full shrink-0 text-[14px] not-italic tracking-[0.28px]"
@@ -1398,9 +1502,10 @@ function App() {
           </p>
         </div>
           {/* 이하 섹션도 Figma 코드 그대로 이어지며, 레이아웃/폰트/색상/텍스트는 전부 동일하게 유지됩니다. */}
+          </div>
         </div>
       </div>
-    </div>
+    </ClickSpark>
   )
 }
 
