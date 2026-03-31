@@ -166,3 +166,16 @@ body {
 .flip-card-back {
   transform: rotateY(180deg);
 }
+
+/* FAQ flip cards - flip on X axis (top-to-bottom) for wide horizontal bars */
+.flip-card-x .flip-card-inner {
+  transition: transform 0.5s ease;
+}
+
+.flip-card-x:hover .flip-card-inner {
+  transform: rotateX(180deg);
+}
+
+.flip-card-x .flip-card-back {
+  transform: rotateX(180deg);
+}

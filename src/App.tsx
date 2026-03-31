@@ -17,15 +17,9 @@ const imgImage86 = '/figma/image86.png'
 const img1 = '/figma/sponsor1.png'
 const img2 = '/figma/sponsor2.png'
 const imgBasemapImage = '/figma/map.png'
+const imgVendorWheel = '/figma/group16.svg'
 const imgRectangle2 = '/figma/rect2.svg'
 const imgFrame11 = '/figma/frame11.svg'
-const imgEllipse10 = '/figma/ellipse11.svg'
-const imgFrame22 = '/figma/ellipse11.svg'
-const imgFrame23 = '/figma/ellipse11.svg'
-const imgFrame24 = '/figma/ellipse11.svg'
-const imgFrame21 = '/figma/ellipse11.svg'
-const imgFrame19 = '/figma/ellipse11.svg'
-const imgEllipse9 = '/figma/ellipse11.svg'
 
 const DESIGN_WIDTH = 1440
 const DESIGN_HEIGHT = 7625
@@ -91,20 +85,18 @@ function App() {
       if (rafId) return
       rafId = requestAnimationFrame(() => {
         const p = Math.min(1, Math.max(0, window.scrollY / (scaleRef.current || 1) / 760))
-        applyExit(heroExitRefs.current[0], -920, -120, -22, p)
-        applyExit(heroExitRefs.current[1], 1080, 60, 24, p)
-        applyExit(heroExitRefs.current[2], 820, -100, 28, p)
-        applyExit(heroExitRefs.current[3], -820, 70, -28, p)
+        applyExit(heroExitRefs.current[0], 800, 200, 18, p)
+        applyExit(heroExitRefs.current[1], 600, -300, 24, p)
+        applyExit(heroExitRefs.current[2], -800, -200, -22, p)
         rafId = 0
       })
     }
 
     const init = () => {
       const p = Math.min(1, Math.max(0, window.scrollY / (scaleRef.current || 1) / 760))
-      applyExit(heroExitRefs.current[0], -920, -120, -22, p)
-      applyExit(heroExitRefs.current[1], 1080, 60, 24, p)
-      applyExit(heroExitRefs.current[2], 820, -100, 28, p)
-      applyExit(heroExitRefs.current[3], -820, 70, -28, p)
+      applyExit(heroExitRefs.current[0], 800, 200, 18, p)
+      applyExit(heroExitRefs.current[1], 600, -300, 24, p)
+      applyExit(heroExitRefs.current[2], -800, -200, -22, p)
     }
     init()
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -180,7 +172,7 @@ function App() {
   }
 
   return (
-    <ClickSpark sparkColor="#fff4df" sparkCount={10} sparkRadius={22} sparkSize={14} duration={500} extraScale={1.15}>
+    <ClickSpark sparkColor="#eb3604" sparkCount={10} sparkRadius={22} sparkSize={14} duration={500} extraScale={1.15}>
       <ScrollBubbles bubbleColor="rgba(255,244,223,0.5)" spawnPerScroll={5}>
       <div className="min-h-screen bg-black text-white">
         <div className="relative flex w-full justify-center overflow-x-hidden">
@@ -592,8 +584,8 @@ function App() {
           className="absolute left-[calc(5%+1px)] top-[3019px] h-[535px] w-[857px] border border-solid border-[#eb3604]"
           data-node-id="275:232"
         >
-          <div className="absolute left-[-1px] top-[-1px] h-[535px] w-[857px] rounded-none" data-name="Basemap image" data-node-id="241:3886">
-            <div className="absolute inset-0 overflow-hidden rounded-none pointer-events-none">
+          <div className="absolute inset-0" data-name="Basemap image" data-node-id="241:3886">
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
               <img
                 alt=""
                 className="absolute left-[0.06%] top-[-3.93%] h-[120%] w-[99.88%] max-w-none"
@@ -602,7 +594,7 @@ function App() {
             </div>
           </div>
           <div
-            className="absolute left-[-1px] top-[-1px] h-[535px] w-[857px] rounded-none bg-[#eb3604] mix-blend-overlay"
+            className="absolute inset-0 bg-[#eb3604] mix-blend-overlay"
             data-name="map"
             data-node-id="205:881"
           />
@@ -615,56 +607,112 @@ function App() {
           </p>
         </div>
         <div className="absolute left-[calc(65%+48px)] top-[3019px] h-[535px] w-[383px]" data-node-id="205:885">
-          <div className="absolute left-[36px] top-[378px] h-[16px] w-[303px] rounded-none bg-[#eb3604]" data-node-id="206:934" />
-          <div className="absolute left-[36px] top-[82px] h-[16px] w-[303px] rounded-none bg-[#eb3604]" data-node-id="207:1002" />
-          <div className="absolute left-0 top-0 h-[535px] w-[382px] rounded-none border border-solid border-[#eb3604] bg-white" data-node-id="275:100" />
-          <div className="absolute left-[46px] top-[262px] text-[10px] not-italic leading-[1.1] tracking-[0.2px] text-[#333]" style={neueHaasBold}>
-            <p className="absolute left-[0px] top-[0px] m-0 h-[13.963px] w-[14px]">25</p>
-            <p className="absolute left-[138px] top-[0px] m-0 h-[12.799px] w-[13px]">28</p>
-            <p className="absolute left-[46px] top-[0px] m-0 h-[13.963px] w-[14px]">26</p>
-            <p className="absolute left-[184px] top-[0px] m-0 h-[12.799px] w-[13px]">29</p>
-            <p className="absolute left-[92px] top-[0px] m-0 h-[13.963px] w-[21px]">27</p>
-            <p className="absolute left-[230px] top-[0px] m-0 h-[13px] w-[14px]">30</p>
-            <p className="absolute left-[275px] top-[0px] m-0 h-[12.799px] w-[13px]">31</p>
+          <div
+            className="absolute left-0 top-0 h-[535px] w-[382px] rounded-none border border-solid border-[#eb3604] bg-white"
+            data-node-id="275:100"
+          >
+            <div className="absolute left-[40px] top-[80px] h-[16px] w-[295px] bg-[#eb3604]" data-node-id="313:301" />
+            <div className="absolute left-[40px] top-[378px] h-[16px] w-[295px] bg-[#eb3604]" data-node-id="313:302" />
+            <div className="absolute left-[46px] top-[262px] text-[10px] not-italic leading-[1.1] tracking-[0.2px] text-[rgba(0,0,0,0.72)]" style={neueHaasBold}>
+              <p className="absolute left-0 top-0 m-0 h-[13.963px] w-[14px]">25</p>
+              <p className="absolute left-[138px] top-0 m-0 h-[12.799px] w-[13px]">28</p>
+              <p className="absolute left-[46px] top-0 m-0 h-[13.963px] w-[14px]">26</p>
+              <p className="absolute left-[184px] top-0 m-0 h-[12.799px] w-[13px]">29</p>
+              <p className="absolute left-[92px] top-0 m-0 h-[13.963px] w-[21px]">27</p>
+              <p className="absolute left-[230px] top-0 m-0 h-[13px] w-[14px]">30</p>
+              <p className="absolute left-[275px] top-0 m-0 h-[12.799px] w-[13px]">31</p>
+            </div>
+            <div className="absolute left-[46px] top-[173px] text-[10px] not-italic leading-[1.1] tracking-[0.2px]" style={neueHaasBold}>
+              <p className="absolute left-0 top-0 m-0 h-[13.963px] w-[14px] text-black">18</p>
+              <p className="absolute left-[138px] top-0 m-0 h-[12.799px] w-[13px] text-[rgba(0,0,0,0.72)]">21</p>
+              <p className="absolute left-[46px] top-0 m-0 h-[13.963px] w-[14px] text-[rgba(0,0,0,0.72)]">19</p>
+              <p className="absolute left-[184px] top-0 m-0 h-[12.799px] w-[13px] text-[rgba(0,0,0,0.72)]">22</p>
+              <p className="absolute left-[92px] top-0 m-0 h-[13.963px] w-[21px] text-[rgba(0,0,0,0.72)]">20</p>
+              <p className="absolute left-[230px] top-0 m-0 h-[13px] w-[14px] text-[rgba(0,0,0,0.72)]">23</p>
+              <p className="absolute left-[275px] top-0 m-0 h-[12.799px] w-[13px] text-[rgba(0,0,0,0.72)]">24</p>
+            </div>
+            <div className="absolute left-[47px] top-[84px] text-[10px] not-italic leading-[1.1] tracking-[0.2px] text-black" style={neueHaasBold}>
+              <p className="absolute left-0 top-0 m-0 h-[13.963px] w-[14px]">11</p>
+              <p className="absolute left-[138px] top-0 m-0 h-[12.799px] w-[13px]">14</p>
+              <p className="absolute left-[46px] top-0 m-0 h-[13.963px] w-[14px]">12</p>
+              <p className="absolute left-[184px] top-0 m-0 h-[12.799px] w-[13px]">15</p>
+              <p className="absolute left-[92px] top-0 m-0 h-[13.963px] w-[21px]">13</p>
+              <p className="absolute left-[230px] top-0 m-0 h-[13px] w-[14px]">16</p>
+              <p className="absolute left-[275px] top-0 m-0 h-[12.799px] w-[13px]">17</p>
+            </div>
+            <p
+              className="absolute left-[29px] top-[325px] m-0 h-[35px] w-[152px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-[#04511b] underline decoration-solid"
+              style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
+              data-node-id="275:129"
+            >
+              November
+            </p>
+            <p
+              className="absolute left-[29px] top-[29px] m-0 h-[35px] w-[152px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-[#04511b] underline decoration-solid"
+              style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
+              data-node-id="275:130"
+            >
+              October
+            </p>
+            <div className="absolute left-[46px] top-[380px] text-[10px] not-italic leading-[1.1] tracking-[0.2px]" data-node-id="275:131" style={neueHaasBold}>
+              <p className="absolute left-px top-px m-0 h-[13.963px] w-[8px] text-black" data-node-id="275:132">
+                1
+              </p>
+              <p className="absolute left-px top-[90.59px] m-0 h-[13.963px] w-[8px] text-[rgba(0,0,0,0.72)]" data-node-id="275:133">
+                8
+              </p>
+              <p className="absolute left-[139px] top-px m-0 h-[12.799px] w-[7px] text-black" data-node-id="275:134">
+                4
+              </p>
+              <p className="absolute left-[139px] top-[90.59px] m-0 h-[12.799px] w-[9px] text-[rgba(0,0,0,0.72)]" data-node-id="275:135">
+                11
+              </p>
+              <p className="absolute left-[47px] top-px m-0 h-[13.963px] w-[8px] text-black" data-node-id="275:136">
+                2
+              </p>
+              <p className="absolute left-[47px] top-[90.59px] m-0 h-[13.963px] w-[8px] text-[rgba(0,0,0,0.72)]" data-node-id="275:137">
+                9
+              </p>
+              <p className="absolute left-[185px] top-px m-0 h-[12.799px] w-[7px] text-black" data-node-id="275:138">
+                5
+              </p>
+              <p className="absolute left-[185px] top-[90.59px] m-0 h-[12.799px] w-[11px] text-[rgba(0,0,0,0.72)]" data-node-id="275:139">
+                12
+              </p>
+              <p className="absolute left-[93px] top-px m-0 h-[13.963px] w-[8px] text-black" data-node-id="275:140">
+                3
+              </p>
+              <p className="absolute left-[93px] top-[90.59px] m-0 h-[13.963px] w-[12px] text-[rgba(0,0,0,0.72)]" data-node-id="275:141">
+                10
+              </p>
+              <p className="absolute left-[231px] top-px m-0 h-[12.799px] w-[7px] text-black" data-node-id="275:142">
+                6
+              </p>
+              <p className="absolute left-[219px] top-[90.59px] m-0 h-[12.799px] w-[11px] text-[rgba(0,0,0,0.72)]" data-node-id="275:143">
+                13
+              </p>
+              <p className="absolute left-[276px] top-px m-0 h-[12.799px] w-[6px] text-black" data-node-id="275:144">
+                7
+              </p>
+              <p className="absolute left-[276px] top-[90.59px] m-0 h-[12.799px] w-[11px] text-[rgba(0,0,0,0.72)]" data-node-id="275:145">
+                14
+              </p>
+            </div>
+            <p
+              className="absolute left-[40px] top-[401px] m-0 h-[9px] w-[52px] text-[8px] not-italic leading-[1.1] tracking-[0.16px] text-[#eb3604]"
+              style={{ ...neueHaasMedium, letterSpacing: '0.16px' }}
+              data-node-id="275:146"
+            >
+              Festival Dates
+            </p>
+            <p
+              className="absolute left-[40px] top-[106px] m-0 h-[9px] w-[62px] text-[8px] not-italic leading-[1.1] tracking-[0.16px] text-[#eb3604]"
+              style={{ ...neueHaasMedium, letterSpacing: '0.16px' }}
+              data-node-id="275:147"
+            >
+              EarlyBird Tickets
+            </p>
           </div>
-          <div className="absolute left-[46px] top-[173px] text-[10px] not-italic leading-[1.1] tracking-[0.2px]" style={neueHaasBold}>
-            <p className="absolute left-[0px] top-[0px] m-0 h-[13.963px] w-[14px] text-[#eb3604]">18</p>
-            <p className="absolute left-[138px] top-[0px] m-0 h-[12.799px] w-[13px] text-[#333]">21</p>
-            <p className="absolute left-[46px] top-[0px] m-0 h-[13.963px] w-[14px] text-[#333]">19</p>
-            <p className="absolute left-[184px] top-[0px] m-0 h-[12.799px] w-[13px] text-[#333]">22</p>
-            <p className="absolute left-[92px] top-[0px] m-0 h-[13.963px] w-[21px] text-[#333]">20</p>
-            <p className="absolute left-[230px] top-[0px] m-0 h-[13px] w-[14px] text-[#333]">23</p>
-            <p className="absolute left-[275px] top-[0px] m-0 h-[12.799px] w-[13px] text-[#333]">24</p>
-          </div>
-          <div className="absolute left-[47px] top-[84px] text-[10px] not-italic leading-[1.1] tracking-[0.2px] text-[#333]" style={neueHaasBold}>
-            <p className="absolute left-[0px] top-[0px] m-0 h-[13.963px] w-[14px]">11</p>
-            <p className="absolute left-[138px] top-[0px] m-0 h-[12.799px] w-[13px]">14</p>
-            <p className="absolute left-[46px] top-[0px] m-0 h-[13.963px] w-[14px]">12</p>
-            <p className="absolute left-[184px] top-[0px] m-0 h-[12.799px] w-[13px]">15</p>
-            <p className="absolute left-[92px] top-[0px] m-0 h-[13.963px] w-[21px]">13</p>
-            <p className="absolute left-[230px] top-[0px] m-0 h-[13px] w-[14px]">16</p>
-            <p className="absolute left-[275px] top-[0px] m-0 h-[12.799px] w-[13px]">17</p>
-          </div>
-          <p className="absolute left-[30px] top-[326px] m-0 h-[35px] w-[152px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-[#eb3604]" style={{ ...neueHaasBold, letterSpacing: '0.6px' }} data-node-id="206:892">November</p>
-          <p className="absolute left-[30px] top-[30px] m-0 h-[35px] w-[152px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-[#eb3604]" style={{ ...neueHaasBold, letterSpacing: '0.6px' }} data-node-id="207:1001">October</p>
-          <div className="absolute left-[47px] top-[381px] text-[10px] not-italic leading-[1.1] tracking-[0.2px]" style={neueHaasBold}>
-            <p className="absolute left-[0px] top-[0px] m-0 h-[13.963px] w-[8px] text-[#eb3604]">1</p>
-            <p className="absolute left-[0px] top-[89.59px] m-0 h-[13.963px] w-[8px] text-[#333]">8</p>
-            <p className="absolute left-[138px] top-[0px] m-0 h-[12.799px] w-[7px] text-[#eb3604]">4</p>
-            <p className="absolute left-[138px] top-[89.59px] m-0 h-[12.799px] w-[9px] text-[#333]">11</p>
-            <p className="absolute left-[46px] top-[0px] m-0 h-[13.963px] w-[8px] text-[#eb3604]">2</p>
-            <p className="absolute left-[46px] top-[89.59px] m-0 h-[13.963px] w-[8px] text-[#333]">9</p>
-            <p className="absolute left-[184px] top-[0px] m-0 h-[12.799px] w-[7px] text-[#eb3604]">5</p>
-            <p className="absolute left-[184px] top-[89.59px] m-0 h-[12.799px] w-[11px] text-[#333]">12</p>
-            <p className="absolute left-[92px] top-[0px] m-0 h-[13.963px] w-[8px] text-[#eb3604]">3</p>
-            <p className="absolute left-[92px] top-[89.59px] m-0 h-[13.963px] w-[12px] text-[#333]">10</p>
-            <p className="absolute left-[230px] top-[0px] m-0 h-[12.799px] w-[7px] text-[#eb3604]">6</p>
-            <p className="absolute left-[230px] top-[89.59px] m-0 h-[12.799px] w-[11px] text-[#333]">13</p>
-            <p className="absolute left-[275px] top-[0px] m-0 h-[12.799px] w-[6px] text-[#eb3604]">7</p>
-            <p className="absolute left-[275px] top-[89.59px] m-0 h-[12.799px] w-[11px] text-[#333]">14</p>
-          </div>
-          <p className="absolute left-[39px] top-[402px] m-0 h-[9px] w-[50px] text-[8px] not-italic leading-[1.1] tracking-[0.16px] text-[#eb3604]" style={{ ...neueHaasRoman, letterSpacing: '0.16px' }} data-node-id="207:1005">Festival Dates</p>
-          <p className="absolute left-[36px] top-[107px] m-0 h-[9px] w-[62px] text-[8px] not-italic leading-[1.1] tracking-[0.16px] text-[#eb3604]" style={{ ...neueHaasRoman, letterSpacing: '0.16px' }} data-node-id="207:1007">EarlyBird Tickets</p>
         </div>
         <p
           className="absolute left-[calc(5%+33px)] top-[3573px] m-0 h-[23px] w-[542px] text-[14px] not-italic leading-[1.1] tracking-[0.28px] text-white"
@@ -693,40 +741,11 @@ function App() {
             Discover Jeju&apos;s makers and growers - from orchard experiences to botanical gardens.
           </p>
         </div>
-        <div className="absolute left-[calc(15%+16px)] top-[4208px] contents" data-node-id="197:327">
-          <div className="absolute left-[calc(20%+51px)] top-[4313px] size-[762px]" data-node-id="197:324">
-            <div className="absolute inset-[-0.2%]">
-              <img alt="" className="block size-full max-w-none" src={imgEllipse10} />
-            </div>
+        <div className="absolute left-[calc(15%+16px)] top-[4089px] contents" data-node-id="275:172">
+          <div className="absolute left-[calc(15%+16px)] top-[4089px] h-[978.219px] w-[971.22px]" data-node-id="275:172">
+            <img alt="" className="absolute block size-full max-w-none" src={imgVendorWheel} />
           </div>
-          <div className="absolute left-[calc(25%+19px)] top-[4350px] size-[703px]" data-node-id="201:336">
-            <img alt="" className="absolute block size-full max-w-none" src={imgFrame22} />
-          </div>
-          <div className="absolute left-[calc(15%+26px)] top-[4225px] size-[961.22px]" data-node-id="201:337">
-            <img alt="" className="absolute block size-full max-w-none" src={imgFrame23} />
-          </div>
-          <div className="absolute left-[calc(15%+16px)] top-[4221px] size-[961.22px]" data-node-id="201:338">
-            <img alt="" className="absolute block size-full max-w-none" src={imgFrame24} />
-          </div>
-          <div className="absolute left-[calc(25%+19px)] top-[4341.22px] size-[703px]" data-node-id="201:335">
-            <img alt="" className="absolute block size-full max-w-none" src={imgFrame21} />
-          </div>
-          <div className="absolute left-[calc(15%+25px)] top-[4208px] size-[961.22px]" data-node-id="201:333">
-            <img alt="" className="absolute block size-full max-w-none" src={imgFrame19} />
-          </div>
-          <div className="absolute left-[calc(15%+16px)] top-[4212px] size-[961.22px]" data-node-id="201:334">
-            <div
-              className="absolute left-0 top-0 flex size-[961.22px] items-center justify-center"
-              style={{ ['--transform-inner-width' as string]: '1200', ['--transform-inner-height' as string]: '19' }}
-            >
-              <div className="-rotate-120 -scale-y-100 flex-none">
-                <div className="relative size-[703.662px]" data-node-id="197:322">
-                  <div className="absolute bottom-[7.6%] left-[51.76%] right-0 top-1/2">
-                    <img alt="" className="block size-full max-w-none" src={imgEllipse9} />
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="absolute left-[calc(15%+16px)] top-[4089px] size-[961.22px]" data-node-id="275:184">
             <button
               type="button"
               aria-label="Show Analog Gyulbat details"
@@ -996,31 +1015,31 @@ function App() {
                 }}
               />
               <div
-                className={`absolute left-[58px] top-0 h-[241px] w-[721px] transition-all duration-300 ease-out ${
+                className={`absolute left-[58px] top-0 z-30 h-[241px] w-[721px] transition-all duration-300 ease-out ${
                   showAnalogGyulbatInfo
                     ? 'translate-y-0 opacity-100 blur-0'
                     : 'pointer-events-none translate-y-2 opacity-0 blur-[2px]'
                 }`}
                 data-node-id="210:1159"
               >
-                <div className="absolute left-[159px] top-0 contents" data-node-id="201:438">
-                  <div
-                    className="absolute left-[159px] top-0 h-[119px] w-[562px] rounded-none border border-solid border-[#eb3604] bg-white shadow-[0px_4px_16.5px_0px_rgba(0,0,0,0.1)]"
-                    data-node-id="201:433"
-                    style={{ background: 'white', border: '1px solid #eb3604' }}
-                  />
-                  <p
-                    className="absolute left-[207px] top-[21px] m-0 h-[64.834px] w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-black"
-                    style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
-                    data-node-id="201:432"
-                  >
-                    During the tangerine harvest season, visitors can pick tangerines directly from pesticide-free orchards. Photo spots arranged throughout the orchard create a special and memorable citrus-picking experience in Jeju.
-                  </p>
+                <div
+                  className="absolute left-[198px] top-[21px] h-[85px] w-[475px] border border-solid border-[#eb3604] bg-white"
+                  data-node-id="313:321"
+                />
+                <div className="absolute left-[193px] top-[15px] z-10 size-[11px]" data-node-id="313:313">
+                  <img alt="" className="absolute block size-full max-w-none" src="/figma/ellipse11.svg" />
                 </div>
+                <p
+                  className="absolute left-[207px] top-[21px] m-0 h-[64.834px] w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-black"
+                  style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+                  data-node-id="275:204"
+                >
+                  During the tangerine harvest season, visitors can pick tangerines directly from pesticide-free orchards. Photo spots arranged throughout the orchard create a special and memorable citrus-picking experience in Jeju.
+                </p>
                 <div
                   className="-translate-x-1/2 absolute left-[116.5px] top-[158px] w-[233px] text-center text-[24px] not-italic leading-[1.28] tracking-[0.48px] text-[#8b0e0e]"
                   style={{ fontFamily: '"Pretendard", sans-serif', fontWeight: 600, letterSpacing: '0.48px' }}
-                  data-node-id="201:332"
+                  data-node-id="275:205"
                 >
                   <p className="m-0 block">Analog Gyulbat</p>
                   <p className="m-0 block">아날로그 귤밭</p>
@@ -1068,31 +1087,31 @@ function App() {
                 }}
               />
               <div
-                className={`absolute left-0 top-0 h-[225px] w-[573px] transition-all duration-300 ease-out ${
+                className={`absolute left-0 top-0 z-30 h-[225px] w-[573px] transition-all duration-300 ease-out ${
                   showJejuInACitrusInfo
                     ? 'translate-y-0 opacity-100 blur-0'
                     : 'pointer-events-none translate-y-2 opacity-0 blur-[2px]'
                 }`}
                 data-node-id="210:1164"
               >
-                <div className="absolute left-0 top-0 contents" data-node-id="201:855">
-                  <div
-                    className="absolute left-0 top-0 h-[119px] w-[562px] rounded-none border border-solid border-[#eb3604] bg-white shadow-[0px_4px_16.5px_0px_rgba(0,0,0,0.1)]"
-                    data-node-id="201:856"
-                    style={{ background: 'white', border: '1px solid #eb3604' }}
-                  />
-                  <p
-                    className="absolute left-[48px] top-[31px] m-0 h-[47px] w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-black"
-                    style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
-                    data-node-id="201:857"
-                  >
-                    A cafe where visitors can enjoy tangerine-picking experiences and relax. A dedicated photo zone in the orchard offers a popular spot for scenic and memorable photos.
-                  </p>
+                <div
+                  className="absolute left-[39px] top-[28px] h-[68px] w-[475px] border border-solid border-[#eb3604] bg-white"
+                  data-node-id="314:330"
+                />
+                <div className="absolute left-[34px] top-[25px] z-10 size-[11px]" data-node-id="313:311">
+                  <img alt="" className="absolute block size-full max-w-none" src="/figma/ellipse11.svg" />
                 </div>
+                <p
+                  className="absolute left-[48px] top-[31px] m-0 h-[47px] w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-black"
+                  style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+                  data-node-id="275:214"
+                >
+                  A café where visitors can enjoy tangerine-picking experiences and relax. A dedicated photo zone in the orchard offers a popular spot for scenic and memorable photos.
+                </p>
                 <div
                   className="absolute left-[340px] top-[142px] w-[233px] text-[24px] not-italic leading-[1.28] tracking-[0.48px] text-[#8b0e0e]"
                   style={{ fontFamily: '"Pretendard", sans-serif', fontWeight: 600, letterSpacing: '0.48px' }}
-                  data-node-id="201:339"
+                  data-node-id="275:215"
                 >
                   <p className="m-0 block">Jeju In-a-Citrus</p>
                   <p className="m-0 block">제주에인감귤밭</p>
@@ -1140,40 +1159,39 @@ function App() {
                 }}
               />
               <div
-                className={`absolute left-0 top-0 h-[196px] w-[562px] transition-all duration-300 ease-out ${
+                className={`absolute left-0 top-0 z-30 h-[196px] w-[562px] transition-all duration-300 ease-out ${
                   showCafeGyulkkotDarakInfo
                     ? 'translate-y-0 opacity-100 blur-0'
                     : 'pointer-events-none translate-y-2 opacity-0 blur-[2px]'
                 }`}
                 data-node-id="210:1163"
               >
-                <div className="absolute left-0 top-[77px] contents" data-node-id="201:719">
-                  <div
-                    className="absolute left-0 top-[77px] h-[119px] w-[562px] rounded-none border border-solid border-[#eb3604] bg-white shadow-[0px_4px_16.5px_0px_rgba(0,0,0,0.1)]"
-                    data-node-id="201:720"
-                    style={{ background: 'white', border: '1px solid #eb3604' }}
-                  />
-                  <p
-                    className="absolute left-[48px] top-[108px] m-0 h-[47px] w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-black"
-                    style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
-                    data-node-id="201:721"
-                  >
-                    The Jeju green tea cream latte and green tangerine Americano are popular menu items. The cafe is also known for its scenic walking paths and photo spots.
-                  </p>
+                <div
+                  className="absolute left-[40px] top-[108px] h-[67px] w-[475px] border border-solid border-[#eb3604] bg-white"
+                  data-node-id="314:328"
+                />
+                <div className="absolute left-[34px] top-[102px] z-10 size-[11px]" data-node-id="313:310">
+                  <img alt="" className="absolute block size-full max-w-none" src="/figma/ellipse11.svg" />
                 </div>
+                <p
+                  className="absolute left-[48px] top-[108px] m-0 h-[47px] w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-black"
+                  style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+                  data-node-id="275:219"
+                >
+                  The Jeju green tea cream latte and green tangerine Americano are popular menu items. The café is also known for its scenic walking paths and photo spots.
+                </p>
                 <div
                   className="absolute left-[340px] top-0 w-[221px] text-[24px] not-italic leading-[1.28] tracking-[0.48px] text-[#8b0e0e]"
                   style={{ fontFamily: '"Pretendard", sans-serif', fontWeight: 600, letterSpacing: '0.48px' }}
-                  data-node-id="201:340"
+                  data-node-id="275:220"
                 >
-                  <p className="m-0 block">Cafe Gyulkkot-</p>
-                  <p className="m-0 block">darak</p>
+                  <p className="m-0 block">Cafe Gyulkkot-darak</p>
                   <p className="m-0 block">귤꽃다락</p>
                 </div>
               </div>
             </div>
             <div
-              className="absolute left-[-179px] top-[766px] h-[137px] w-[767px]"
+              className="absolute left-[-60px] top-[766px] min-h-[137px] w-[767px] overflow-visible"
               onMouseEnter={() => {
                 if (dolbitnaArtFarmHoverTimeoutRef.current !== null) {
                   window.clearTimeout(dolbitnaArtFarmHoverTimeoutRef.current)
@@ -1213,96 +1231,103 @@ function App() {
                 }}
               />
               <div
-                className={`absolute left-0 top-0 h-[137px] w-[767px] transition-all duration-300 ease-out ${
+                className={`absolute left-0 top-0 z-30 min-h-[137px] w-[767px] overflow-visible transition-all duration-300 ease-out ${
                   showDolbitnaArtFarmInfo
                     ? 'translate-y-0 opacity-100 blur-0'
                     : 'pointer-events-none translate-y-2 opacity-0 blur-[2px]'
                 }`}
-                data-node-id="241:3915"
+                data-node-id="275:206"
               >
-                <div
-                  className="absolute left-0 top-[18px] h-[119px] w-[562px] rounded-none border border-solid border-[#eb3604] bg-white shadow-[0px_4px_16.5px_0px_rgba(0,0,0,0.1)]"
-                  data-node-id="201:587"
-                />
-                <p
-                  className="absolute left-[48px] top-[39px] m-0 h-[47px] w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-black"
-                  style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
-                  data-node-id="201:588"
-                >
-                  Promotes and preserves the tradition of Jeju stone walls while encouraging their repair and maintenance across the country. Visitors can also join volunteer experiences building traditional Jeju stone walls.
-                </p>
-                <div
-                  className="absolute left-[544px] top-[-57px] flex h-[83px] w-[267px] flex-col items-center justify-start text-center text-[24px] not-italic leading-[1.28] tracking-[0.48px] text-[#8b0e0e]"
-                  style={{ fontFamily: '"Pretendard", sans-serif', fontWeight: 600, letterSpacing: '0.48px' }}
-                  data-node-id="201:341"
-                >
-                  <p className="m-0 block">Dolbitna Art Farm</p>
-                  <p className="m-0 block">돌빛나 예술농장</p>
+                <div className="absolute left-0 top-0 h-[137px] w-[767px]" data-node-id="275:207">
+                  <div
+                    className="absolute left-[39px] top-[39px] h-[85px] w-[475px] border border-solid border-[#eb3604] bg-white"
+                    data-node-id="314:326"
+                  />
+                  <p
+                    className="absolute left-[48px] top-[39px] z-[1] m-0 w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-black"
+                    style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+                    data-node-id="275:209"
+                  >
+                    Promotes and preserves the tradition of Jeju stone walls while encouraging their repair and maintenance across the country. Visitors can also join volunteer experiences building traditional Jeju stone walls.
+                  </p>
+                  <div
+                    className="-translate-x-1/2 absolute top-[-28px] left-[calc(961.22px/2+60px)] whitespace-nowrap text-center text-[24px] not-italic leading-[0] tracking-[0.48px] text-[#8b0e0e]"
+                    style={{ fontFamily: '"Pretendard", sans-serif', fontWeight: 600, letterSpacing: '0.48px' }}
+                    data-node-id="275:210"
+                  >
+                    <p className="m-0 leading-[1.28]">Dolbitna Art Farm</p>
+                    <p className="m-0 leading-[1.28]">돌빛나 예술농장</p>
+                  </div>
+                </div>
+                <div className="absolute left-[33px] top-[35px] z-10 size-[11px]" data-node-id="313:319">
+                  <img alt="" className="absolute block size-full max-w-none" src="/figma/ellipse11.svg" />
                 </div>
               </div>
             </div>
             <div className="absolute left-[565px] top-[502px] h-[222px] w-[590px]">
               <div
-                className={`absolute left-0 top-0 h-[222px] w-[590px] transition-all duration-300 ease-out ${
+                className={`absolute left-0 top-0 z-30 h-[222px] w-[590px] transition-all duration-300 ease-out ${
                   showSanghyowonInfo
                     ? 'translate-y-0 opacity-100 blur-0'
                     : 'pointer-events-none translate-y-2 opacity-0 blur-[2px]'
                 }`}
                 data-node-id="210:1161"
               >
-                <div className="absolute left-0 top-0 h-[222px] w-[590px]" data-node-id="241:3932">
-                  <div className="absolute left-[28px] top-[103px] contents" data-node-id="201:456">
-                    <div
-                      className="absolute left-[28px] top-[103px] h-[119px] w-[562px] rounded-none border border-solid border-[#eb3604] bg-white shadow-[0px_4px_16.5px_0px_rgba(0,0,0,0.1)]"
-                      data-node-id="201:457"
-                    />
-                    <p
-                      className="absolute left-[76px] top-[124px] m-0 h-[47px] w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-black"
-                      style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
-                      data-node-id="201:458"
-                    >
-                      A natural garden where diverse flower festivals take place throughout the year. In winter, visitors can see camellia flowers, one of Jeju&apos;s most iconic blooms. The site also conducts plant resource research.
-                    </p>
-                  </div>
+                <div className="absolute left-0 top-0 h-[222px] w-[590px]" data-node-id="275:222">
                   <div
                     className="absolute left-0 top-0 w-[267px] text-[24px] not-italic leading-[1.28] tracking-[0.48px] text-[#8b0e0e]"
                     style={{ fontFamily: '"Pretendard", sans-serif', fontWeight: 600, letterSpacing: '0.48px' }}
-                    data-node-id="201:342"
+                    data-node-id="275:226"
                   >
                     <p className="m-0 block">Sanghyowon Botanical</p>
                     <p className="m-0 block">Garden</p>
                     <p className="m-0 block">상효원 수목원</p>
+                  </div>
+                  <div
+                    className="absolute left-[67px] top-[100px] flex h-[85px] w-[475px] items-center border border-solid border-[#eb3604] bg-white px-[9px] py-[6px]"
+                    data-node-id="275:222:box"
+                  >
+                    <p
+                      className="m-0 w-full text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-black"
+                      style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+                      data-node-id="275:225"
+                    >
+                      A natural garden where diverse flower festivals take place throughout the year. In winter, visitors can see camellia flowers, one of Jeju&apos;s most iconic blooms. The site also conducts plant resource research.
+                    </p>
+                  </div>
+                  <div className="absolute left-[61px] top-[94px] z-10 size-[11px]">
+                    <img alt="" className="absolute block size-full max-w-none" src="/figma/ellipse11.svg" />
                   </div>
                 </div>
               </div>
             </div>
             <div className="absolute left-[591px] top-[257px] h-[230px] w-[588px]">
               <div
-                className={`absolute left-0 top-0 h-[230px] w-[588px] transition-all duration-300 ease-out ${
+                className={`absolute left-0 top-0 z-30 h-[230px] w-[588px] transition-all duration-300 ease-out ${
                   showBaekrokDamInfo
                     ? 'translate-y-0 opacity-100 blur-0'
                     : 'pointer-events-none translate-y-2 opacity-0 blur-[2px]'
                 }`}
                 data-node-id="210:1160"
               >
-                <div className="absolute left-[26px] top-0 contents" data-node-id="201:453">
-                  <div
-                    className="absolute left-[26px] top-0 h-[119px] w-[562px] rounded-none border border-solid border-[#eb3604] bg-white shadow-[0px_4px_16.5px_0px_rgba(0,0,0,0.1)]"
-                    data-node-id="201:454"
-                    style={{ background: 'white', border: '1px solid #eb3604' }}
-                  />
-                  <p
-                    className="absolute left-[74px] top-[39px] m-0 h-[47px] w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-black"
-                    style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
-                    data-node-id="201:455"
-                  >
-                    Located near Jeju Airport, this is a space where visitors can purchase tangerines along with Jeju&apos;s local specialties.
-                  </p>
-                </div>
                 <div
-                  className="absolute left-0 top-[147px] w-[267px] text-[24px] not-italic leading-[1.28] tracking-[0.48px] text-[#8b0e0e]"
+                  className="absolute left-[66px] top-[39px] h-[47px] w-[426px] border border-solid border-[#eb3604] bg-white"
+                  data-node-id="314:322"
+                />
+                <div className="absolute left-[60px] top-[33px] z-10 size-[11px]" data-node-id="313:315">
+                  <img alt="" className="absolute block size-full max-w-none" src="/figma/ellipse11.svg" />
+                </div>
+                <p
+                  className="absolute left-[74px] top-[39px] m-0 h-[47px] w-[466px] text-[16px] not-italic leading-[1.28] tracking-[0.32px] text-black"
+                  style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+                  data-node-id="275:230"
+                >
+                  Located near Jeju Airport, this is a space where visitors can purchase tangerines along with Jeju&apos;s local specialties.
+                </p>
+                <div
+                  className="absolute left-0 top-[147px] text-[24px] not-italic leading-[1.28] tracking-[0.48px] text-[#8b0e0e] whitespace-nowrap"
                   style={{ fontFamily: '"Pretendard", sans-serif', fontWeight: 600, letterSpacing: '0.48px' }}
-                  data-node-id="201:343"
+                  data-node-id="275:231"
                 >
                   <p className="m-0 block">Baekrok-dam Farm</p>
                   <p className="m-0 block">백록담 감귤농장</p>
@@ -1336,11 +1361,11 @@ function App() {
           data-node-id="205:870"
         >
           <div className="flip-card-inner size-full">
-            <div className="flip-card-front overflow-clip rounded-none border border-solid border-[#eb3604]">
+            <div className="flip-card-front overflow-clip rounded-none border border-solid border-[#eb3604]" data-node-id="275:196">
               <div
                 className="absolute left-[-249px] top-[-1px] h-[577px] w-[1018px]"
                 data-name="407820_412869_1948 1"
-                data-node-id="207:1054"
+                data-node-id="275:197"
               >
                 <img
                   alt=""
@@ -1349,22 +1374,22 @@ function App() {
                 />
               </div>
               <div
-                className="absolute left-[-1px] top-[-1px] h-[322px] w-[310px] rounded-none bg-white"
-                data-node-id="205:871"
+                className="absolute left-[-1px] top-[-1px] h-[577px] w-[310px] bg-gradient-to-b from-[9.161%] from-white to-[63.665%] to-[rgba(156,57,12,0)]"
+                data-node-id="275:198"
               />
-              <div className="absolute left-[99px] top-[17px] h-[36px] w-[109px]" data-name="image 86" data-node-id="207:1057">
-                <img alt="" className="pointer-events-none absolute inset-0 size-full max-w-none object-cover" src={imgImage86} />
-              </div>
               <div className="absolute left-[24px] top-[478px] h-[37px] w-[152px] bg-[#eb3604]" data-node-id="314:332" />
               <p
                 className="absolute left-[26px] top-[478px] m-0 h-[98px] w-[186px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
                 style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
-                data-node-id="205:872"
+                data-node-id="275:199"
               >
                 Nonghyup
               </p>
+              <div className="absolute left-[99px] top-[17px] h-[36px] w-[109px]" data-name="image 86" data-node-id="275:200">
+                <img alt="" className="pointer-events-none absolute inset-0 size-full max-w-none object-cover" src={imgImage86} />
+              </div>
             </div>
-            <div className="flip-card-back border border-solid border-[#eb3604] bg-[#702900]">
+            <div className="flip-card-back border border-solid border-[#eb3604] bg-[#3395FF]">
               <p
                 className="absolute left-[27px] top-[44px] m-0 text-left"
                 style={{
@@ -1387,27 +1412,27 @@ function App() {
           data-node-id="205:862"
         >
           <div className="flip-card-inner size-full">
-            <div className="flip-card-front overflow-clip rounded-none border border-solid border-[#eb3604]">
-              <div className="absolute left-[-370px] top-[-1px] h-[577px] w-[932px]" data-name="image 87" data-node-id="207:1060">
+            <div className="flip-card-front overflow-clip rounded-none border border-solid border-[#eb3604]" data-node-id="275:186">
+              <div className="absolute left-[-370px] top-[-1px] h-[577px] w-[932px]" data-name="image 87" data-node-id="275:187">
                 <img alt="" className="pointer-events-none absolute inset-0 size-full max-w-none object-cover" src={imgImage87} />
               </div>
               <div
-                className="absolute left-[-1px] top-[-1px] h-[577px] w-[310px] rounded-none bg-white"
-                data-node-id="207:1062"
+                className="absolute left-[-1px] top-[-1px] h-[577px] w-[310px] bg-gradient-to-b from-[9.161%] from-white to-[63.665%] to-[rgba(156,57,12,0)]"
+                data-node-id="275:188"
               />
               <div className="absolute left-[24px] top-[478px] h-[37px] w-[115px] bg-[#eb3604]" data-node-id="314:333" />
               <p
                 className="absolute left-[26px] top-[478px] m-0 h-[98px] w-[186px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
                 style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
-                data-node-id="205:864"
+                data-node-id="275:189"
               >
                 Osulloc
               </p>
-              <div className="absolute left-[89px] top-[-1px] size-[128px]" data-name="image 88" data-node-id="207:1065">
+              <div className="absolute left-[89px] top-[-1px] size-[128px]" data-name="image 88" data-node-id="275:190">
                 <img alt="" className="pointer-events-none absolute inset-0 size-full max-w-none object-cover" src={imgImage88} />
               </div>
             </div>
-            <div className="flip-card-back border border-solid border-[#eb3604] bg-[#702900]">
+            <div className="flip-card-back border border-solid border-[#eb3604] bg-[#04511B]">
               <p
                 className="absolute left-[27px] top-[44px] m-0 text-left"
                 style={{
@@ -1430,29 +1455,29 @@ function App() {
           data-node-id="205:873"
         >
           <div className="flip-card-inner size-full">
-            <div className="flip-card-front overflow-clip rounded-none border border-solid border-[#eb3604]">
-              <div className="absolute left-[-293px] top-[-1px] h-[577px] w-[986px]" data-name="image 89" data-node-id="207:1072">
+            <div className="flip-card-front overflow-clip rounded-none border border-solid border-[#eb3604]" data-node-id="275:191">
+              <div className="absolute left-[-293px] top-[-1px] h-[577px] w-[986px]" data-name="image 89" data-node-id="275:192">
                 <img alt="" className="pointer-events-none absolute inset-0 size-full max-w-none object-cover" src={imgImage89} />
               </div>
               <div
-                className="absolute left-[-1px] top-[-1px] h-[577px] w-[310px] rounded-none bg-white"
-                data-node-id="207:1074"
+                className="absolute left-[-1px] top-[-1px] h-[577px] w-[310px] bg-gradient-to-b from-[9.161%] from-white to-[63.665%] to-[rgba(156,57,12,0)]"
+                data-node-id="275:194"
               />
               <div className="absolute left-[24px] top-[478px] h-[67px] w-[186px] bg-[#eb3604]" data-node-id="314:335" />
               <p
-                className="absolute left-[26px] top-[478px] m-0 max-w-[243px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
+                className="absolute left-[26px] top-[478px] z-[1] m-0 h-[98px] w-[243px] text-[30px] not-italic leading-[1.1] tracking-[0.6px] text-white"
                 style={{ ...neueHaasBold, letterSpacing: '0.6px' }}
-                data-node-id="205:875"
+                data-node-id="275:193"
               >
                 Jeju Tourism Organization
               </p>
-              <div className="absolute left-[83px] top-[8px] h-[51px] w-[141px]" data-name="image 91" data-node-id="207:1083">
+              <div className="absolute left-[83px] top-[8px] z-[2] h-[51px] w-[141px]" data-name="image 91" data-node-id="275:195">
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                   <img alt="" className="absolute left-0 top-[-34.63%] h-[164.08%] w-[143.48%] max-w-none" src={imgImage91} />
                 </div>
               </div>
             </div>
-            <div className="flip-card-back border border-solid border-[#eb3604] bg-[#702900]">
+            <div className="flip-card-back border border-solid border-[#eb3604] bg-[#FF9E00]">
               <p
                 className="absolute left-[27px] top-[44px] m-0 text-left"
                 style={{
@@ -1483,85 +1508,105 @@ function App() {
             FREQUENTLY ASKED QUESTIONS
           </p>
         </div>
-        <div className="absolute left-[calc(10%-13px)] top-[6799px] h-[119px] w-[1236px]" data-node-id="207:969">
-          <div
-            className="absolute left-0 top-0 h-[119px] w-[1184px] rounded-none bg-[#eb3604]"
-            data-node-id="207:970"
-          />
-          <p
-            className="absolute left-[45px] top-[25px] m-0 h-[35px] w-[252px] text-[20px] not-italic leading-[1.1] tracking-[0.4px] text-white"
-            style={{ ...neueHaasBold, letterSpacing: '0.4px' }}
-            data-node-id="207:971"
-          >
-            Do I need tickets?
-          </p>
-          <p
-            className="absolute left-[60px] top-[67px] m-0 h-[35px] w-[1113px] text-[16px] not-italic leading-[1.1] tracking-[0.32px] text-white"
-            style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
-            data-node-id="207:972"
-          >
-            Entry is permitted only with a valid ticket. Tickets can be purchased online, and on-site purchases include tax. Early bird tickets are available at a 20% discount.
-          </p>
+        <div
+          className="flip-card flip-card-x absolute left-[calc(10%-13px)] top-[6799px] h-[89px] w-[1184px] cursor-pointer"
+          data-node-id="275:154"
+        >
+          <div className="flip-card-inner size-full">
+            <div className="flip-card-front flex items-center justify-center bg-[#eb3604]">
+              <p
+                className="m-0 text-center text-[24px] not-italic leading-[1.1] tracking-[0.48px] text-white"
+                style={{ ...neueHaasBold, letterSpacing: '0.48px' }}
+                data-node-id="275:156"
+              >
+                Do I need tickets?
+              </p>
+            </div>
+            <div className="flip-card-back flex items-center justify-center bg-[#eb3604] px-[36px]">
+              <p
+                className="m-0 text-center text-[16px] not-italic leading-[1.1] tracking-[0.32px] text-white"
+                style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+                data-node-id="275:157"
+              >
+                Entry is permitted only with a valid ticket. Tickets can be purchased online, and on-site purchases include tax. Early bird tickets are available at a 20% discount.
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="absolute left-[calc(10%-13px)] top-[6943px] h-[119px] w-[1236px]" data-node-id="207:1013">
-          <div
-            className="absolute left-0 top-0 h-[119px] w-[1184px] rounded-none bg-[#04511b]"
-            data-node-id="207:1014"
-          />
-          <p
-            className="absolute left-[45px] top-[25px] m-0 h-[35px] w-[252px] text-[20px] not-italic leading-[1.1] tracking-[0.4px] text-white"
-            style={{ ...neueHaasBold, letterSpacing: '0.4px' }}
-            data-node-id="207:1015"
-          >
-            Is it family-friendly?
-          </p>
-          <p
-            className="absolute left-[60px] top-[67px] m-0 h-[35px] w-[1113px] text-[16px] not-italic leading-[1.1] tracking-[0.32px] text-white"
-            style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
-            data-node-id="207:1016"
-          >
-            Yes. The festival is designed for families, friends, and first-time visitors.
-          </p>
+        <div
+          className="flip-card flip-card-x absolute left-[calc(10%-13px)] top-[6913px] h-[89px] w-[1184px] cursor-pointer"
+          data-node-id="275:162"
+        >
+          <div className="flip-card-inner size-full">
+            <div className="flip-card-front flex items-center justify-center bg-[#04511b]">
+              <p
+                className="m-0 text-center text-[24px] not-italic leading-[1.1] tracking-[0.48px] text-white"
+                style={{ ...neueHaasBold, letterSpacing: '0.48px' }}
+                data-node-id="275:164"
+              >
+                Is it family-friendly?
+              </p>
+            </div>
+            <div className="flip-card-back flex items-center justify-center bg-[#04511b] px-[36px]">
+              <p
+                className="m-0 text-center text-[16px] not-italic leading-[1.1] tracking-[0.32px] text-white"
+                style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+                data-node-id="275:165"
+              >
+                Yes. The festival is designed for families, friends, and first-time visitors.
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="absolute left-[calc(10%-13px)] top-[7087px] h-[119px] w-[1236px]" data-node-id="207:1017">
-          <div
-            className="absolute left-0 top-0 h-[119px] w-[1184px] rounded-none bg-[#1daeef]"
-            data-node-id="207:1018"
-          />
-          <p
-            className="absolute left-[45px] top-[25px] m-0 h-[35px] w-[252px] text-[20px] not-italic leading-[1.1] tracking-[0.4px] text-white"
-            style={{ ...neueHaasBold, letterSpacing: '0.4px' }}
-            data-node-id="207:1019"
-          >
-            Are pets allowed?
-          </p>
-          <p
-            className="absolute left-[60px] top-[67px] m-0 h-[35px] w-[1113px] text-[16px] not-italic leading-[1.1] tracking-[0.32px] text-white"
-            style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
-            data-node-id="207:1020"
-          >
-            Yes. Please keep your pet on a leash at all times and clean up after them. We ask all visitors to ensure their pets do not disturb other guests.
-          </p>
+        <div
+          className="flip-card flip-card-x absolute left-[calc(10%-13px)] top-[7027px] h-[89px] w-[1184px] cursor-pointer"
+          data-node-id="275:158"
+        >
+          <div className="flip-card-inner size-full">
+            <div className="flip-card-front flex items-center justify-center bg-[#1daeef]">
+              <p
+                className="m-0 text-center text-[24px] not-italic leading-[1.1] tracking-[0.48px] text-white"
+                style={{ ...neueHaasBold, letterSpacing: '0.48px' }}
+                data-node-id="275:160"
+              >
+                Are pets allowed?
+              </p>
+            </div>
+            <div className="flip-card-back flex items-center justify-center bg-[#1daeef] px-[36px]">
+              <p
+                className="m-0 text-center text-[16px] not-italic leading-[1.1] tracking-[0.32px] text-white"
+                style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+                data-node-id="275:161"
+              >
+                Yes. Please keep your pet on a leash at all times and clean up after them. We ask all visitors to ensure their pets do not disturb other guests.
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="absolute left-[calc(10%-13px)] top-[7231px] h-[119px] w-[1236px]" data-node-id="207:1021">
-          <div
-            className="absolute left-0 top-0 h-[119px] w-[1184px] rounded-none bg-[#ffb700]"
-            data-node-id="207:1022"
-          />
-          <p
-            className="absolute left-[45px] top-[25px] m-0 h-[35px] w-[343px] text-[20px] not-italic leading-[1.1] tracking-[0.4px] text-white"
-            style={{ ...neueHaasBold, letterSpacing: '0.4px' }}
-            data-node-id="207:1023"
-          >
-            Is the venue wheelchair accessible?
-          </p>
-          <p
-            className="absolute left-[60px] top-[67px] m-0 h-[35px] w-[1113px] text-[16px] not-italic leading-[1.1] tracking-[0.32px] text-white"
-            style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
-            data-node-id="207:1024"
-          >
-            Yes. the venue is wheelchair accessible. Most areas of the festival grounds are accessible, and staff will be available to assist visitors if needed.
-          </p>
+        <div
+          className="flip-card flip-card-x absolute left-[calc(10%-13px)] top-[7141px] h-[89px] w-[1184px] cursor-pointer"
+          data-node-id="275:166"
+        >
+          <div className="flip-card-inner size-full">
+            <div className="flip-card-front flex items-center justify-center bg-[#ffb700]">
+              <p
+                className="m-0 text-center text-[24px] not-italic leading-[1.1] tracking-[0.48px] text-white"
+                style={{ ...neueHaasBold, letterSpacing: '0.48px' }}
+                data-node-id="275:168"
+              >
+                Is the venue wheelchair accessible?
+              </p>
+            </div>
+            <div className="flip-card-back flex items-center justify-center bg-[#ffb700] px-[36px]">
+              <p
+                className="m-0 text-center text-[16px] not-italic leading-[1.1] tracking-[0.32px] text-white"
+                style={{ ...neueHaasRoman, letterSpacing: '0.32px' }}
+                data-node-id="275:169"
+              >
+                Yes. the venue is wheelchair accessible. Most areas of the festival grounds are accessible, and staff will be available to assist visitors if needed.
+              </p>
+            </div>
+          </div>
         </div>
           {/* 이하 섹션도 Figma 코드 그대로 이어지며, 레이아웃/폰트/색상/텍스트는 전부 동일하게 유지됩니다. */}
           </div>
